@@ -1,13 +1,16 @@
 /* Variable declarations */
 :root {
-    --sidebar-bg-color: #3f3f3f;
+    --sidebar-bg-color: #1d263b;
     --menu-bg-color: #fefefe;
-    --navbar-bg-color: #9f9f9f;
-    --navbar-bg-color__hover: #8d8d8d;
-    --sidebar-text-color: #fefefe;
-    --sidebar-button-bg-color: #9f9f9f;
+    --navbar-bg-color: #1d263b;
+    --navbar-bg-color__hover: #3d5a80;
+    --sidebar-text-color: #e0fbfc;
+    --sidebar-button-bg-color: #ee6c4d;
+    --sidebar-accent-color: #3d5a80;
     --menu-item-info-color: #6d6d6d;
     --menu-item-hover-bg-color: #efefef;
+    --navbar-height: 55px;
+    --navtab-active-bg-color: #ee6c4d;
 }
 
 body {
@@ -30,24 +33,33 @@ body {
 .navbar {
     padding: 0 4%;
     background-color: var(--navbar-bg-color);
+    height: var(--navbar-height);
 }
 
 .nav-tabs {
     display: inline-block;
     list-style-type: none;
     width: 100%;
+    height: 100%;
     padding-left: 0;
     margin: 0;
 }
 
 .nav-tab {
     display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
     padding: 2% 7%;
     cursor: pointer;
+    color: var(--sidebar-text-color);
 }
 
 .nav-tab:hover {
     background-color: var(--navbar-bg-color__hover);
+}
+
+.nav-tab.active {
+    background-color: var(--navtab-active-bg-color);
 }
 
 /**************************\
@@ -95,7 +107,7 @@ body {
 }
 
 .order-items-container.over {
-    border: 2px dashed #fefefe;
+    border: 2px dashed var(--sidebar-text-color);
 }
 
 .order-item {
@@ -116,7 +128,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-top: 1px solid #9f9f9f;
+    border-top: 1px solid var(--sidebar-accent-color);
     padding: 0 2%;
 }
 
@@ -139,7 +151,7 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    height: 100%;
+    height: calc(100% - var(--navbar-height));
 }
 
 .menu-column {
@@ -173,6 +185,7 @@ body {
 .dragger-container {
     margin-right: 3%;
     cursor: pointer;
+    pointer-events: none;
 }
 
 .menu-item-info-container {
@@ -186,11 +199,13 @@ body {
 
 .menu-item__name {
     margin: 0;
+    pointer-events: none;
 }
 
 .menu-item__price {
     font-weight: bold;
     margin: 0;
+    pointer-events: none;
 }
 
 .menu-item__info {
@@ -198,4 +213,5 @@ body {
     font-size: 0.75em;
     color: var(--menu-item-info-color);
     margin: 1% 0 0 0;
+    pointer-events: none;
 }
