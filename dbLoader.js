@@ -15,7 +15,7 @@
 
         for (var i = 0; i < DB2.spirits.length; i++) {
             // Retrieves first 22 items, because that's the amount of different whiskeys in a normal pub
-            if (DB2.spirits[i].varugrupp === "Whisky, Malt" && collector.length < 22) {
+            if (DB2.spirits[i].varugrupp.includes("Whisky")&& collector.length < 22) {
                 collector.push({
                     name: DB2.spirits[i].namn,
                     price: DB2.spirits[i].prisinklmoms,
