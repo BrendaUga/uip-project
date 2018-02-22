@@ -202,7 +202,6 @@
         loadBeers: function () {
             var beerDrinks = Model.fetchBeers();
             View.renderMenu(beerDrinks)
-
         }
 
     };

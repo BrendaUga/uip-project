@@ -37,12 +37,12 @@
      *    alcohol content
      * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}
      */
-    function allWhineBeverages() {
+    function allWineBeverages() {
 
         var collector = [];
 
         for (var i = 0; i < DB2.spirits.length; i++) {
-            // Retrieves first 22 items, because that's the amount of different whiskeys in a normal pub
+            // Retrieves first 22 items, because that's the amount of different wines in a normal pub
             if (DB2.spirits[i].varugrupp.includes("Vin") && collector.length < 22) {
                 collector.push({
                     name: DB2.spirits[i].namn,
@@ -70,7 +70,7 @@
         var collector = [];
 
         for (var i = 0; i < DB2.spirits.length; i++) {
-            // Retrieves first 22 items, because that's the amount of different whiskeys in a normal pub
+            // Retrieves first 22 items, because that's the amount of different beers in a normal pub
             if (DB2.spirits[i].varugrupp.includes("Öl") && collector.length < 22) {
                 collector.push({
                     name: DB2.spirits[i].namn,
@@ -87,7 +87,7 @@
     window.app = window.app || {};
     window.app.dbLoader = {
         allWhiskeyBeverages: allWhiskeyBeverages,
-        allWineBeverages: allWhineBeverages,
+        allWineBeverages: allWineBeverages,
         allBeerBeverages: allBeerBeverages
     };
 
