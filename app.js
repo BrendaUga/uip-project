@@ -154,7 +154,15 @@
              */
             View.registerEventHandler('menuFilterClicked', function (filter) {
                 if (filter === 'whiskeys') {
-                    Controller.loadWhiskeys();
+                    Controller.loadWhiskeys()
+                }
+
+                else if(filter === 'wines'){
+                    Controller.loadWines()
+                }
+
+                else if (filter === 'beers'){
+                    Controller.loadBeers()
                 }
             });
 
@@ -178,8 +186,26 @@
         loadWhiskeys: function () {
             var whiskeyDrinks = Model.fetchWhiskeys();
             View.renderMenu(whiskeyDrinks);
+        },
+
+        /**
+         * Loads wine type drinks from Model and renders them in the View.
+         */
+        loadWines: function () {
+            var wineDrinks = Model.fetchWines();
+            View.renderMenu(wineDrinks);
+        },
+
+        /**
+         * Loads beer type drinks from Model and renders them in the View.
+         */
+        loadBeers: function () {
+            var beerDrinks = Model.fetchBeers();
+            View.renderMenu(beerDrinks)
         }
+
     };
+
 
     var Model = {
 
@@ -189,6 +215,22 @@
          */
         fetchWhiskeys: function() {
             return window.app.dbLoader.allWhiskeyBeverages();
+        },
+
+        /**
+         * Fetches wine type drinks from the DB.
+         * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}, list of drink objects
+         */
+        fetchWines: function() {
+            return window.app.dbLoader.allWineBeverages();
+        },
+
+        /**
+         * Fetches beer type drinks from the DB.
+         * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}, list of drink objects
+         */
+        fetchBeers: function(){
+            return window.app.dbLoader.allBeerBeverages();
         }
     };
 
