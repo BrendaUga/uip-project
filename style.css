@@ -11,6 +11,7 @@
     --menu-item-hover-bg-color: #efefef;
     --navbar-height: 55px;
     --navtab-active-bg-color: #ee6c4d;
+    --sidebar-text-hover-color: #C2DDDE;
 }
 
 body {
@@ -218,3 +219,61 @@ body {
     margin: 1% 0 0 0;
     pointer-events: none;
 }
+
+/**************************\
+           MODAL
+\**************************/
+
+.modal-container {
+    position: fixed;
+    right: 38%;
+    top: 20%;
+    height: 50%;
+    z-index: 2;
+    padding: 4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--sidebar-bg-color);
+    color: var(--sidebar-text-color);
+    box-shadow: 3px 3px 11px rgba(0, 0, 0, 0.5);
+}
+
+.closed {
+    display: none;
+}
+
+.modal-header-container img {
+    width: 90px;
+    height: 90px;
+    fill: var(--sidebar-text-color);
+}
+
+.modal-body-container {
+    text-align: center;
+}
+
+.button__link {
+    background: none;
+    border: none;
+    color: var(--sidebar-text-hover-color);
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.button__link:hover {
+    text-decoration: underline;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.5);
+}
+
+

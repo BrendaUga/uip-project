@@ -30,6 +30,19 @@
             return htmlString;
         },
 
+        orderConfirmModalTemplate: function() {
+            return '' +
+                '        <div class="modal-header-container">' +
+                '            <img src="done.svg"/>' +
+                '        </div>' +
+                '        <div class="modal-body-container">' +
+                '            <h1>YOUR ORDER IS ON <br>IT\'S WAY</h1>' +
+                '        </div>' +
+                '        <div class="modal-footer-container">' +
+                '            <button type="button" class="button__link close-modal-link">Back to menu</button>' +
+                '        </div>';
+        },
+
         /**
          * Fetches and renders menu layout for given drinks.
          * @param drinks, list of drinks
@@ -37,6 +50,26 @@
         renderMenu: function (drinks) {
             $('#menu').html(View.menuItemTemplate(drinks));
             View.registerMenuItemListeners();
+        },
+
+        renderModal: function (modalType) {
+            var modalContainer = $('.modal-container');
+            var modalOverlay = $('.modal-overlay');
+
+            if (modalType === 'orderConfirm') {
+                $(modalContainer).html(View.orderConfirmModalTemplate());
+            } else if (modalType === 'creditPayment') {
+                //TODO: implement creditPayment template and render here
+                console.log("Credit payment modal needed here now");
+            }
+
+            $(modalContainer).removeClass('closed');
+            $(modalOverlay).removeClass('closed');
+            $('.close-modal-link, .modal-overlay').on('click', function() {
+                $(modalContainer).addClass('closed');
+                $(modalOverlay).addClass('closed');
+            });
+
         },
 
         /**
@@ -171,11 +204,11 @@
              */
             View.registerEventHandler('paymentOptionClicked', function (option) {
                 if (option === 'card') {
-                    // TODO: implement card payment modal here
-                    console.log('Want to pay by card');
+                    setTimeout(function() {
+                        View.renderModal('orderConfirm');
+                    }, 5000);
                 } else if (option === 'credit') {
-                    // TODO: implement credit payment flow here
-                    console.log('Want to pay by credit');
+                    View.renderModal('creditPayment');
                 }
             });
         },
