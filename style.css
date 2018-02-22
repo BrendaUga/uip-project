@@ -104,7 +104,7 @@ body {
 .order-items-container {
     min-height: 83%;
     max-height: 83%;
-    padding: 0 2%;
+    padding: 0 2% 0 0;
     border: 2px solid transparent;
     overflow-y: scroll;
 }
@@ -117,6 +117,13 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+}
+
+.order-item div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .order-item p {
@@ -125,6 +132,17 @@ body {
 
 .order-item__price {
     font-weight: bold;
+}
+
+.order-item img {
+    width: 18px;
+    height: 18px;
+    margin: -2px 10px 0 0;
+    cursor: pointer;
+}
+
+.order-item img:hover {
+    filter: brightness(80%);
 }
 
 .order-total-container {
