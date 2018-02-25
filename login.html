@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+<form name="loginForm" method="post">
+    <table width="20%" bgcolor="#6d6d6d" align="center">
+
+        <tr>
+            <td colspan=2><b>HTML Login Page</b></td>
+        </tr>
+
+        <tr>
+            <td>Username:</td>
+            <td><input type="text" size=25 name="userId"></td>
+
+        </tr>
+
+        <tr>
+            <td>Password:</td>
+            <td><input type="Password" size=25 name="pwd"></td>
+        </tr>
+
+        <tr>
+            <td ><input type="Reset"></td>
+            <td><input type="button" onclick="return validateUser(this.form)" value="Login"></td>
+            <!--        <input type="button" value="Login_page" onclick="window.location.href='index.html'" /> -->
+        </tr>
+    </table>
+</form>
+<script src="login.js"></script>
+
+</body>
+</html>
