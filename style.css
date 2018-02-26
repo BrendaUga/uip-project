@@ -65,6 +65,24 @@ body {
     background-color: var(--navtab-active-bg-color);
 }
 
+.lang {
+    margin:0px;
+    padding:0px;
+    border:0px;
+    background:transparent;
+    white-space:nowrap;
+    width:30px;
+    height:20px;
+    overflow:visible;
+    float: right;
+    margin: 7px;
+}
+
+.lang img {
+    width:30px;
+    height:20px;
+}
+
 /**************************\
            SIDEBAR
 \**************************/
