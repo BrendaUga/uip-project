@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Menu</title>
+    <title>Manager view</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="menu-container">
 
         <nav class="navbar">
@@ -20,34 +21,32 @@
 
         <div class="menu-content">
             <div class="menu-column" id="menu"></div>
+            <a href="#" type="button" class="sidebar-button restock-button">RESTOCK</a>
         </div>
     </div>
 
     <div class="sidebar-container">
         <div class="sidebar-container__padding">
-            <h1>Your order</h1>
+            <h1>Current orders</h1>
             <div class="order-items-container">
 
             </div>
         </div>
         <div class="sidebar-footer">
-            <div class="order-total-container">
-                <p class="order-total__text">TOTAL:</p>
-                <p class="order-total__price"></p>
-            </div>
-            <a href="#" type="button" class="sidebar-button" data-option="card">CARD</a>
-            <a href="#" type="button" class="sidebar-button" data-option="credit">CREDIT</a>
+            <a href="#" type="button" class="sidebar-button manager_button" data-option="done">MARK AS DONE</a>
+            <a href="#" type="button" class="sidebar-button manager_button button__link hidden" data-option="undo">Undo</a>
         </div>
     </div>
 
     <div class="modal-overlay closed"></div>
     <div class="modal-container closed"></div>
-<script src="Beverages.js"></script>
-<script src="dbLoader.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous">
-</script>
-<script src="app.js"></script>
+
+    <script src="Beverages.js"></script>
+    <script src="dbLoader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -27,6 +27,10 @@ body {
     overflow: hidden;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 /**************************\
            NAVBAR
 \**************************/
@@ -294,4 +298,64 @@ body {
     background-color: rgba(0,0,0,0.5);
 }
 
+/**************************\
+        MANAGER VIEW
+\**************************/
 
+.sidebar-button.manager_button {
+    display: block;
+    margin: 3% auto;
+}
+
+.sidebar-button.manager_button:not(.button__link) {
+    padding: 4%;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.restock-button {
+    position: fixed;
+    bottom: 2%;
+    left: 28%;
+    margin: 0 auto;
+    width: 7%;
+    padding: 1% 2%;
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.order__number {
+    margin: 3% 0;
+    text-align: center;
+    font-weight: normal;
+    font-size: 1.3em;
+}
+
+.order-container {
+    position: relative;
+    margin-bottom: 8%;
+}
+
+.order-container:not(:first-of-type)::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 33%;
+    width: 33%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.order-container p {
+    margin: 2% 0;
+}
+
+.order-item__quantity {
+    font-weight: bold;
+}
+
+.order-item__checkbox {
+    transform: scale(1.4);
+    margin-right: 11px;
+}
