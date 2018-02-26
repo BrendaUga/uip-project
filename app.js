@@ -52,6 +52,10 @@
             View.registerMenuItemListeners();
         },
 
+        /**
+         * Renders Modals based in type in function parameters. Available types are 'orderConfirm' and 'creditPayment'.
+         * @param modalType String representing type of modal wanted
+         */
         renderModal: function (modalType) {
             var modalContainer = $('.modal-container');
             var modalOverlay = $('.modal-overlay');
@@ -70,6 +74,22 @@
                 $(modalOverlay).addClass('closed');
             });
 
+        },
+
+        /**
+         * Renders spinner with dark overlay.
+         */
+        renderSpinner: function () {
+            $('.modal-overlay').removeClass('closed');
+            $('.spinner').removeClass('closed');
+        },
+
+        /**
+         * Closes spinner and dark overlay.
+         */
+        closeSpinner: function () {
+            $('.spinner').addClass('closed');
+            $('.modal-overlay').addClass('closed');
         },
 
         /**
@@ -216,7 +236,9 @@
              */
             View.registerEventHandler('paymentOptionClicked', function (option) {
                 if (option === 'card') {
+                    View.renderSpinner();
                     setTimeout(function() {
+                        View.closeSpinner();
                         View.renderModal('orderConfirm');
                     }, 5000);
                 } else if (option === 'credit') {
