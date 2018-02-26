@@ -138,8 +138,10 @@
          * @param price, price of new item
          */
         addNewOrderItem: function (name, price) {
-            var newOrderItemHtml = '<div class="order-item"><p class="order-item__name">' + name + '</p><p class="order-item__price">' + price + '.-</p>';
+            var removeButton = $('<img class="remove-order-item" src="remove.svg"/>');
+            var newOrderItemHtml = $('<div class="order-item"><div><p class="order-item__name">' + name + '</p></div><p class="order-item__price">' + price + '.-</p></div>');
             $(View.orderItemsContainer).append(newOrderItemHtml);
+            newOrderItemHtml.children('div').prepend(removeButton);
 
             var orderTotalPrice = $('.order-total__price');
             var currentTotalPrice = $(orderTotalPrice).html().length
@@ -147,6 +149,16 @@
                 : 0;
             currentTotalPrice += parseInt(price);
             $(orderTotalPrice).html(currentTotalPrice + '.-');
+
+            $(removeButton).on('click', function(e) {
+                var orderItemPrice = $(e.target).parent().parent().find('.order-item__price')[0].innerHTML.split('.')[0];
+                var currentTotalPrice = $(orderTotalPrice).html().length
+                    ? parseInt($(orderTotalPrice).html().split('.')[0])
+                    : 0;
+                var newOrderTotalPrice = currentTotalPrice - orderItemPrice;
+                $(orderTotalPrice).html(newOrderTotalPrice + '.-');
+                $(e.target).parents('.order-item').remove();
+            });
         },
 
         /**
