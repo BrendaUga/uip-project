@@ -303,14 +303,19 @@ body {
 \**************************/
 
 .sidebar-button.manager_button {
-    display: block;
-    margin: 3% auto;
+    display: inline-block;
+    margin: 0 auto;
 }
 
 .sidebar-button.manager_button:not(.button__link) {
+    display: block;
     padding: 4%;
     font-weight: bold;
     font-size: 1em;
+}
+
+.manager_button.button__link {
+    width: auto;
 }
 
 .restock-button {

@@ -210,6 +210,7 @@
          *      paymentOptionClicked - when a payment option button gets clicked
          *      markedAsDone - when 'Mark as done' is clicked
          *      undo - when 'Undo' is clicked
+         *      redo - when 'Redo' is clicked
          *
          * @param {string} eventType, event type name
          * @param {Function} callback, callback to be run in Controller when event happens
@@ -240,6 +241,10 @@
                 $('.manager_button[data-option="undo"]').on('click', function() {
                     callback();
                 });
+            } else if (eventType === 'redo') {
+                $('.manager_button[data-option="redo"]').on('click', function() {
+                    callback();
+                });
             }
         },
 
@@ -255,6 +260,20 @@
          */
         enableUndoButton: function () {
             $('.manager_button[data-option="undo"]').removeClass('hidden');
+        },
+
+        /**
+         * Disables redo button in manager view.
+         */
+        disableRedoButton: function () {
+            $('.manager_button[data-option="redo"]').addClass('hidden');
+        },
+
+        /**
+         * Enables redo button in manager view.
+         */
+        enableRedoButton: function () {
+            $('.manager_button[data-option="redo"]').removeClass('hidden');
         }
     };
 
@@ -270,13 +289,15 @@
          */
         state: {
             currentOrders: [],
-            history: []
+            history: [],
+            position: 0
         },
 
         /**
          * Contains functions to be run when document is loaded.
          */
         onLoaded: function() {
+            // Checks whether we are in client or manager view, needed to display correct sidebar.
             if (window.location.href.indexOf('manager.html') === -1) {
                 View.onLoaded();
             } else if (window.location.href.indexOf('manager.html') !== -1) {
@@ -292,6 +313,7 @@
                         { 'name': 'Red wine', 'quantity': 2 }
                     ],
                 ];
+
                 Controller.state.currentOrders = currentOrders;
                 Controller.state.history.push(currentOrders);
                 View.renderCurrentOrders(currentOrders);
@@ -335,23 +357,30 @@
             View.registerEventHandler('markedAsDone', function (checkedItems) {
                 var newOrdersList = [];
                 for (var i = 0; i < Controller.state.currentOrders.length; i++) {
-                    var newOrder = [];
 
+                    var newOrder = [];
                     for (var j = 0; j < Controller.state.currentOrders[i].length; j++) {
                         if (checkedItems.indexOf(i + "_" + j) === -1) { // finds the orders that remain after marked as done
                             newOrder.push(Object.assign({}, Controller.state.currentOrders[i][j])); // pushes these to new currentOrders
                         }
-                    }
 
+                    }
                     if (newOrder.length > 0) {
                         newOrdersList.push(newOrder);
                     }
                 }
-                //Update state and history of states
+                //Update current state and history of states
+                Controller.state.position = Math.min(Controller.state.position, Controller.state.history.length - 1);
+                // Slice is needed to insert into current position after some undos (not into the state before undos)
+                Controller.state.history = Controller.state.history.slice(0, Controller.state.position + 1);
                 Controller.state.history.push(newOrdersList);
+                Controller.state.position++;
                 Controller.state.currentOrders = newOrdersList;
                 View.renderCurrentOrders(newOrdersList);
                 View.enableUndoButton();
+                if (!Controller.canRedo()) {
+                    View.disableRedoButton();
+                }
             });
 
             /**
@@ -359,19 +388,38 @@
              * Manages state history and current state to enable undo functionality.
              */
             View.registerEventHandler('undo', function() {
-                if (Controller.state.history.length === 1) {
+                if (!Controller.canUndo()) {
                     return;
                 }
-                var currentState = Controller.state.history.pop();
-                var previousState = Controller.state.history.pop();
-                Controller.state.currentOrders = previousState;
-                Controller.state.history.push(previousState);
-                View.renderCurrentOrders(previousState);
-                // if history has one element (current state), then there is nothing to undo anymore, disables button
-                if (Controller.state.history.length === 1) {
+                var newState = Controller.state.history[--Controller.state.position];
+                Controller.state.currentOrders = newState;
+
+                View.renderCurrentOrders(newState);
+                View.enableRedoButton();
+                if (!Controller.canUndo()) {
+
                     View.disableUndoButton();
                 }
             });
+
+            /**
+             * Registers listener in View, handles 'Redo' button click in manager view.
+             * Manages state history and current state to enable redo functionality.
+             */
+            View.registerEventHandler('redo', function() {
+                if (!Controller.canRedo()) {
+                    return;
+                }
+
+                var newState = Controller.state.history[++Controller.state.position];
+                Controller.state.currentOrders = newState;
+                View.renderCurrentOrders(newState);
+
+                if (!Controller.canRedo()) {
+                    View.disableRedoButton();
+                }
+            });
+
         },
 
         /**
@@ -396,6 +444,22 @@
         loadBeers: function () {
             var beerDrinks = Model.fetchBeers();
             View.renderMenu(beerDrinks, Controller.isManager)
+        },
+
+        /**
+         * Checks if undo is possible.
+         * @returns {boolean} Whether undo can be done
+         */
+        canUndo: function() {
+            return Controller.state.position > 0;
+        },
+
+        /**
+         * Checks if redo is possible.
+         * @returns {boolean} Whether redo can be done
+         */
+        canRedo: function () {
+            return Controller.state.position < Controller.state.history.length - 1;
         }
 
     };
