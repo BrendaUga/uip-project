@@ -30,6 +30,19 @@
             return htmlString;
         },
 
+        orderConfirmModalTemplate: function() {
+            return '' +
+                '        <div class="modal-header-container">' +
+                '            <img src="done.svg"/>' +
+                '        </div>' +
+                '        <div class="modal-body-container">' +
+                '            <h1>YOUR ORDER IS ON <br>IT\'S WAY</h1>' +
+                '        </div>' +
+                '        <div class="modal-footer-container">' +
+                '            <button type="button" class="button__link close-modal-link">Back to menu</button>' +
+                '        </div>';
+        },
+
         /**
          * Fetches and renders menu layout for given drinks.
          * @param drinks, list of drinks
@@ -37,6 +50,26 @@
         renderMenu: function (drinks) {
             $('#menu').html(View.menuItemTemplate(drinks));
             View.registerMenuItemListeners();
+        },
+
+        renderModal: function (modalType) {
+            var modalContainer = $('.modal-container');
+            var modalOverlay = $('.modal-overlay');
+
+            if (modalType === 'orderConfirm') {
+                $(modalContainer).html(View.orderConfirmModalTemplate());
+            } else if (modalType === 'creditPayment') {
+                //TODO: implement creditPayment template and render here
+                console.log("Credit payment modal needed here now");
+            }
+
+            $(modalContainer).removeClass('closed');
+            $(modalOverlay).removeClass('closed');
+            $('.close-modal-link, .modal-overlay').on('click', function() {
+                $(modalContainer).addClass('closed');
+                $(modalOverlay).addClass('closed');
+            });
+
         },
 
         /**
@@ -105,8 +138,10 @@
          * @param price, price of new item
          */
         addNewOrderItem: function (name, price) {
-            var newOrderItemHtml = '<div class="order-item"><p class="order-item__name">' + name + '</p><p class="order-item__price">' + price + '.-</p>';
+            var removeButton = $('<img class="remove-order-item" src="remove.svg"/>');
+            var newOrderItemHtml = $('<div class="order-item"><div><p class="order-item__name">' + name + '</p></div><p class="order-item__price">' + price + '.-</p></div>');
             $(View.orderItemsContainer).append(newOrderItemHtml);
+            newOrderItemHtml.children('div').prepend(removeButton);
 
             var orderTotalPrice = $('.order-total__price');
             var currentTotalPrice = $(orderTotalPrice).html().length
@@ -114,6 +149,16 @@
                 : 0;
             currentTotalPrice += parseInt(price);
             $(orderTotalPrice).html(currentTotalPrice + '.-');
+
+            $(removeButton).on('click', function(e) {
+                var orderItemPrice = $(e.target).parent().parent().find('.order-item__price')[0].innerHTML.split('.')[0];
+                var currentTotalPrice = $(orderTotalPrice).html().length
+                    ? parseInt($(orderTotalPrice).html().split('.')[0])
+                    : 0;
+                var newOrderTotalPrice = currentTotalPrice - orderItemPrice;
+                $(orderTotalPrice).html(newOrderTotalPrice + '.-');
+                $(e.target).parents('.order-item').remove();
+            });
         },
 
         /**
@@ -171,11 +216,11 @@
              */
             View.registerEventHandler('paymentOptionClicked', function (option) {
                 if (option === 'card') {
-                    // TODO: implement card payment modal here
-                    console.log('Want to pay by card');
+                    setTimeout(function() {
+                        View.renderModal('orderConfirm');
+                    }, 5000);
                 } else if (option === 'credit') {
-                    // TODO: implement credit payment flow here
-                    console.log('Want to pay by credit');
+                    View.renderModal('creditPayment');
                 }
             });
         },
