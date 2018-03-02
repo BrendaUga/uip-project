@@ -5,14 +5,14 @@
      */
 
     function validateUser(form) {
-        if (form.userId.value === "admin" && form.pwd.value === "") {
+        if (form.userId.value === "Thomas (Client)" && form.pwd.value === "123") {
             window.location.href = "index.html";
         }
-        else if (form.userId.value === "vip") {
-
+        else if (form.userId.value === "Alice (Manager)" && form.pwd.value === "123") {
+            window.location.href = "index.html";
         }
-        else if (form.userId.value === "user") {
-
+        else if (form.userId.value === "Bob (VIP Client)" && form.pwd.value === "123") {
+            window.location.href = "index.html";
         }
         else {
             alert("Bad Username or Password");

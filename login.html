@@ -1,35 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Login Page</title>
+    <link rel="stylesheet" href="login_style.css">
 </head>
+<header>
+    <h1>
+        <div class="header">
+            <div class="image"><img src="logo.png"></div>
+            <div class="text tr" key="title">The Seasick Captain</div>
+            <div class="languages">
+                <button id="es" class="lang"><img src="flag_es.png"></button>
+                <button id="ca" class="lang"><img src="flag_cat.png"></button>
+                <button id="sv" class="lang"><img src="flag_sw.png"></button>
+                <button id="en" class="lang"><img src="flag_en.png"></button>
+            </div>
+        </div>
+    </h1>
+</header>
 <body>
-<form name="loginForm" method="post">
-    <table width="20%" bgcolor="#6d6d6d" align="center">
-
-        <tr>
-            <td colspan=2><b>HTML Login Page</b></td>
-        </tr>
-
-        <tr>
-            <td>Username:</td>
-            <td><input type="text" size=25 name="userId"></td>
-
-        </tr>
-
-        <tr>
-            <td>Password:</td>
-            <td><input type="Password" size=25 name="pwd"></td>
-        </tr>
-
-        <tr>
-            <td ><input type="Reset"></td>
-            <td><input type="button" onclick="return validateUser(this.form)" value="Login"></td>
-            <!--        <input type="button" value="Login_page" onclick="window.location.href='index.html'" /> -->
-        </tr>
-    </table>
-</form>
+<div class="outer">
+    <div class="middle">
+        <div class="inner">
+            <form name="loginForm" method="post">
+                <table align="center">
+                    <tr>
+                        <td id="username">Username:</td>
+                    </tr>
+                    <tr>
+                        <td id="usernameField"><input type=text size="36" list=users name="userId" >
+                            <datalist id=users>
+                                <option> Thomas (Client)
+                                <option> Bob (VIP Client)
+                                <option> Alice (Manager)
+                            </datalist>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="password">Password:</td>
+                    </tr>
+                    <tr>
+                        <td id="passwordField"><input type="Password" size=36 name="pwd"></td>
+                    </tr>
+                    <tr>
+                        <!-- <td ><input type="Reset"></td> -->
+                        <td id="loginBtn"><input type="button" onclick="return validateUser(this.form)" value="Login"></td>
+                        <!--        <input type="button" value="Login_page" onclick="window.location.href='index.html'" /> -->
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="login.js"></script>
-
+<script src="languages.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#en').trigger('click');
+    });
+</script>
 </body>
 </html>
