@@ -155,14 +155,16 @@
             View.registerEventHandler('menuFilterClicked', function (filter) {
                 if (filter === 'whiskeys') {
                     Controller.loadWhiskeys()
-                }
-
-                else if(filter === 'wines'){
+                } else if(filter === 'wines'){
                     Controller.loadWines()
-                }
-
-                else if (filter === 'beers'){
+                } else if (filter === 'beers'){
                     Controller.loadBeers()
+                } else if (filter === 'specials'){
+                    if (activeUser == null) {
+                        openModal(true);
+                    } else {
+                        Controller.loadBeers();
+                    }
                 }
             });
 

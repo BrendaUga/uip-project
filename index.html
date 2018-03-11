@@ -23,12 +23,47 @@
         </div>
     </div>
 
+    <div id="loginModal" class="modal">
+        <div class="modal_content">
+            <div class="modal_header">
+                <span class="closeBtn">&times;</span>
+            </div>
+            <div class="modal_body">
+                <h1 id="modalHeaderH1">Log in for VIP access</h1>
+                <form name="loginForm" method="post">
+                    <div id="form_elements" style="width: 100%">
+                        <div id="userPassWrapper">
+                            <div class="login_text">Username</div>
+                            <input id="usernameField" type=text list=users name="userId" >
+                            <datalist id=users>
+                                <option> Charlie (VIP Client)
+                                <option> Bob (VIP Client)
+                                <option> Alice (Manager)
+                            </datalist>
+                            <div class="login_text">Password</div>
+                            <input id="passwordField" type="Password" name="pwd"></td>
+                        </div>
+                        <div id="sendLogInBtnWrapper">
+                            <input id="sendLogInBtn" type="button" onclick="return validateUser(this.form)" value="Log In">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="sidebar-container">
-        <div class="sidebar-container__padding">
-            <button id="es" class="lang"><img src="flag_es.png"></button>
-            <button id="ca" class="lang"><img src="flag_cat.png"></button>
-            <button id="sv" class="lang"><img src="flag_sw.png"></button>
+        <div class="sidebar_top">
+            <div class="login_wrapper">
+                <p id="loggedUsername"></p>
+                <input id="login_button" type="button" value="Log in" style="padding:0px; border:0px; background:transparent;">
+            </div>
             <button id="en" class="lang"><img src="flag_en.png"></button>
+            <button id="sv" class="lang"><img src="flag_sw.png"></button>
+            <button id="ca" class="lang"><img src="flag_cat.png"></button>
+            <button id="es" class="lang"><img src="flag_es.png"></button>
+        </div>
+        <div class="sidebar-container__padding">
             <h1 class="tr" key="your-order"></h1>
             <div class="order-items-container">
 
@@ -43,12 +78,14 @@
             <a href="#" type="button" class="sidebar-button tr" data-option="credit" key="cash"></a>
         </div>
     </div>
+
 <script src="Beverages.js"></script>
 <script src="dbLoader.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous">
 </script>
+<script src="login.js" ></script>
 <script src="app.js"></script>
 <script src="languages.js"></script>
 <script type="text/javascript">
