@@ -5,7 +5,6 @@ LangTrans['sv']=new Array();
 LangTrans['ca']=new Array();
 LangTrans['es']=new Array();
 
-LangTrans['en']['title']='The Seasick Captain';
 LangTrans['en']['beer']='Beer';
 LangTrans['en']['wine']='Wine';
 LangTrans['en']['whiskey']='Whiskey';
@@ -16,7 +15,6 @@ LangTrans['en']['total']='TOTAL:';
 LangTrans['en']['card']='CARD';
 LangTrans['en']['cash']='CASH'; //Cash?
 
-LangTrans['sv']['title']='The Seasick Captain';
 LangTrans['sv']['beer']='Öl';
 LangTrans['sv']['wine']='Vin';
 LangTrans['sv']['whiskey']='Whiskey';
@@ -27,7 +25,6 @@ LangTrans['sv']['total']='TOTAL:';
 LangTrans['sv']['card']='KORT';
 LangTrans['sv']['cash']='KONTANT';
 
-LangTrans['ca']['title']='The Seasick Captain';
 LangTrans['ca']['beer']='Cervesa';
 LangTrans['ca']['wine']='Vi';
 LangTrans['ca']['whiskey']='Whiskey';
@@ -38,7 +35,6 @@ LangTrans['ca']['total']='TOTAL:';
 LangTrans['ca']['card']='TARGETA';
 LangTrans['ca']['cash']='EFECTIU';
 
-LangTrans['es']['title']='The Seasick Captain';
 LangTrans['es']['beer']='Õlu';
 LangTrans['es']['wine']='Vein';
 LangTrans['es']['whiskey']='Viski';

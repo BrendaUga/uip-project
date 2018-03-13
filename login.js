@@ -23,6 +23,9 @@
             activeUser = null;
             loggedUserField.textContent = "";
             loginBtn.value = "Log in";
+            window.app.Controller.loadBeers();
+            $('.nav-tab').removeClass('active');
+            $('.nav-tab[data-filter="beers"]').addClass('active');
         }
     }
 
@@ -63,6 +66,6 @@
         loginBtn.value = "Log out";
         closeModal();
         if (modalFromSpecials) {
-            window.app.Controller.loadBeers();
+            window.app.Controller.loadSpecials();
         }
     }
