@@ -161,6 +161,10 @@
                 return false;
             });
 
+            $(function() {
+                $('#en').trigger('click');
+            });
+
         },
 
         /**
@@ -344,7 +348,6 @@
     window.app.View = View;
     window.app.Controller = Controller;
     window.app.Model = Model;
-
     $(document).ready(function() {
        Controller.onLoaded();
     });
