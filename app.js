@@ -128,6 +128,10 @@
                 return false;
             });
 
+            $(function() {
+                $('#en').trigger('click');
+            });
+
         },
 
         /**
@@ -286,10 +290,6 @@
     window.app.Model = Model;
     $(document).ready(function() {
        Controller.onLoaded();
-
-        $(function() {
-            $('#en').click();
-        });
     });
 
 })(window);
