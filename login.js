@@ -63,6 +63,6 @@
         loginBtn.value = "Log out";
         closeModal();
         if (modalFromSpecials) {
-            //Load Specials
+            window.app.Controller.loadBeers();
         }
     }
