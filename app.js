@@ -30,6 +30,30 @@
             return htmlString;
         },
 
+        /**
+         * Creates the menu item template that is used to display all the different foods.
+         * @param foods, list of foods in one tab
+         * @returns {string}, HTML string to append to the DOM
+         */
+        menuItemFoodTemplate: function (foods) {
+            var htmlString = '';
+            for (var i = 0; i < foods.length; i++) {
+                htmlString += '<div class="menu-item" draggable="true">' +
+                    '              <div class="dragger-container">' +
+                    '                  <img src="dragger.svg"/>' +
+                    '              </div>' +
+                    '              <div class="menu-item-info-container">' +
+                    '                  <p class="menu-item__name">' +
+                    foods[i].name +
+                    '                  </p>' +
+                    '                  <p class="menu-item__price">' + foods[i].price + '.-' + '</p>' +
+                    '                  <p class="menu-item__info">' + foods[i].description + '</p>' +
+                    '              </div>' +
+                    '          </div>'
+            }
+            return htmlString;
+        },
+
         orderConfirmModalTemplate: function() {
             return '' +
                 '        <div class="modal-header-container">' +
@@ -52,6 +76,16 @@
             View.registerMenuItemListeners();
         },
 
+
+        /**
+         * Fetches and renders menu layout for given foods.
+         * @param foods, list of foods
+         */
+        renderFoodMenu: function (foods) {
+            $('#menu').html(View.menuItemFoodTemplate(foods));
+            View.registerMenuItemListeners();
+        },
+      
         /**
          * Renders Modals based in type in function parameters. Available types are 'orderConfirm' and 'creditPayment'.
          * @param modalType String representing type of modal wanted
@@ -148,6 +182,10 @@
                 return false;
             });
 
+            $(function() {
+                $('#en').trigger('click');
+            });
+
         },
 
         /**
@@ -229,6 +267,14 @@
                 else if (filter === 'beers'){
                     Controller.loadBeers()
                 }
+
+                else if (filter === 'foods'){
+                    Controller.loadFoods()
+                }
+
+                else if (filter ==='specials'){
+                    Controller.loadSpecials()
+                }
             });
 
             /**
@@ -269,8 +315,17 @@
         loadBeers: function () {
             var beerDrinks = Model.fetchBeers();
             View.renderMenu(beerDrinks)
-        }
+        },
 
+        loadFoods: function () {
+            var food = Model.fetchFoods();
+            View.renderFoodMenu(food)
+        },
+
+        loadSpecials: function () {
+            var specialDrinks = Model.fetchSpecials();
+            View.renderMenu(specialDrinks)
+        }
     };
 
 
@@ -298,7 +353,17 @@
          */
         fetchBeers: function(){
             return window.app.dbLoader.allBeerBeverages();
+        },
+
+        fetchFoods: function(){
+            return window.app.dbLoader.allFood();
+        },
+
+        fetchSpecials: function(){
+            return window.app.dbLoader.allSpecialBeverages();
         }
+
+
     };
 
     // Registers namespaces in window object.
@@ -306,7 +371,6 @@
     window.app.View = View;
     window.app.Controller = Controller;
     window.app.Model = Model;
-
     $(document).ready(function() {
        Controller.onLoaded();
     });
