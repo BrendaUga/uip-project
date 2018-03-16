@@ -31,6 +31,30 @@
         },
 
         /**
+         * Creates the menu item template that is used to display all the different foods.
+         * @param foods, list of foods in one tab
+         * @returns {string}, HTML string to append to the DOM
+         */
+        menuItemFoodTemplate: function (foods) {
+            var htmlString = '';
+            for (var i = 0; i < foods.length; i++) {
+                htmlString += '<div class="menu-item" draggable="true">' +
+                    '              <div class="dragger-container">' +
+                    '                  <img src="dragger.svg"/>' +
+                    '              </div>' +
+                    '              <div class="menu-item-info-container">' +
+                    '                  <p class="menu-item__name">' +
+                    foods[i].name +
+                    '                  </p>' +
+                    '                  <p class="menu-item__price">' + foods[i].price + '.-' + '</p>' +
+                    '                  <p class="menu-item__info">' + foods[i].description + '</p>' +
+                    '              </div>' +
+                    '          </div>'
+            }
+            return htmlString;
+        },
+
+        /**
          * Creates the HTML for the order confirmed modal.
          * @returns {string} HTML of modal with type 'orderConfirmed', to be appended to DOM
          */
@@ -89,9 +113,18 @@
         },
 
         /**
+         * Fetches and renders menu layout for given foods.
+         * @param foods, list of foods
+         */
+        renderFoodMenu: function (foods) {
+            $('#menu').html(View.menuItemFoodTemplate(foods));
+            View.registerMenuItemListeners();
+        },
+      
+        /**
          * Renders modals of different types.
          * Toggles modal and modal overlay, and registers click listeners for closing modal.
-         * @param modalType Type of modal to choose correct modal body content
+         * @param modalType String representing type of modal wanted
          */
         renderModal: function (modalType) {
             var modalContainer = $('.modal-container');
@@ -110,6 +143,22 @@
                 $(modalContainer).addClass('closed');
                 $(modalOverlay).addClass('closed');
             });
+        },
+
+        /**
+         * Renders spinner with dark overlay.
+         */
+        renderSpinner: function () {
+            $('.modal-overlay').removeClass('closed');
+            $('.spinner').removeClass('closed');
+        },
+
+        /**
+         * Closes spinner and dark overlay.
+         */
+        closeSpinner: function () {
+            $('.spinner').addClass('closed');
+            $('.modal-overlay').addClass('closed');
         },
 
         /**
@@ -168,6 +217,10 @@
                 $(View.orderItemsContainer).removeClass('over');
                 e.stopPropagation();
                 return false;
+            });
+
+            $(function() {
+                $('#en').trigger('click');
             });
 
         },
@@ -334,6 +387,14 @@
                 else if (filter === 'beers'){
                     Controller.loadBeers()
                 }
+
+                else if (filter === 'foods'){
+                    Controller.loadFoods()
+                }
+
+                else if (filter ==='specials'){
+                    Controller.loadSpecials()
+                }
             });
 
             /**
@@ -341,7 +402,9 @@
              */
             View.registerEventHandler('paymentOptionClicked', function (option) {
                 if (option === 'card') {
+                    View.renderSpinner();
                     setTimeout(function() {
+                        View.closeSpinner();
                         View.renderModal('orderConfirm');
                     }, 5000);
                 } else if (option === 'credit') {
@@ -460,8 +523,23 @@
          */
         canRedo: function () {
             return Controller.state.position < Controller.state.history.length - 1;
-        }
+        },
 
+        /**
+         * Loads foods from Model and renders them in the View.
+         */
+        loadFoods: function () {
+            var food = Model.fetchFoods();
+            View.renderFoodMenu(food)
+        },
+
+        /**
+         * Loads special type drinks from Model and renders them in the View.
+         */
+        loadSpecials: function () {
+            var specialDrinks = Model.fetchSpecials();
+            View.renderMenu(specialDrinks)
+        }
     };
 
 
@@ -489,7 +567,24 @@
          */
         fetchBeers: function(){
             return window.app.dbLoader.allBeerBeverages();
+        },
+
+        /**
+         * Fetches foods from the DB.
+         * @returns {{name: string, price: string, category: string, description: string}[]}
+         */
+        fetchFoods: function(){
+            return window.app.dbLoader.allFood();
+        },
+
+        /**
+         * Fetches special type drinks from the DB.
+         * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}
+         */
+        fetchSpecials: function(){
+            return window.app.dbLoader.allSpecialBeverages();
         }
+
     };
 
     // Registers namespaces in window object.
@@ -497,7 +592,6 @@
     window.app.View = View;
     window.app.Controller = Controller;
     window.app.Model = Model;
-
     $(document).ready(function() {
        Controller.onLoaded();
     });
