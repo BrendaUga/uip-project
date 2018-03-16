@@ -6,8 +6,10 @@
      *    beverage name,
      *    price,
      *    type,
-     *    alcohol content
-     * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}
+     *    alcohol content,
+     *    quantity
+     * @author Brenda Uga
+     * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
      */
     function allWhiskeyBeverages() {
 
@@ -20,7 +22,8 @@
                     name: DB5.spirits[i].namn,
                     price: DB5.spirits[i].prisinklmoms,
                     category: DB5.spirits[i].varugrupp,
-                    alcoholContent: DB5.spirits[i].alkoholhalt
+                    alcoholContent: DB5.spirits[i].alkoholhalt,
+                    quantity: DB5.spirits[i].quantity
                 });
             }
         }
@@ -34,8 +37,10 @@
      *    beverage name,
      *    price,
      *    type,
-     *    alcohol content
-     * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}
+     *    alcohol content,
+     *    quantity
+     * @author Brenda Uga
+     * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
      */
     function allWineBeverages() {
 
@@ -48,7 +53,8 @@
                     name: DB5.spirits[i].namn,
                     price: DB5.spirits[i].prisinklmoms,
                     category: DB5.spirits[i].varugrupp,
-                    alcoholContent: DB5.spirits[i].alkoholhalt
+                    alcoholContent: DB5.spirits[i].alkoholhalt,
+                    quantity: DB5.spirits[i].quantity
                 });
             }
         }
@@ -62,8 +68,10 @@
      *    beverage name,
      *    price,
      *    type,
-     *    alcohol content
-     * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}
+     *    alcohol content,
+     *    quantity
+     * @author Brenda Uga
+     * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
      */
     function allBeerBeverages() {
 
@@ -76,7 +84,8 @@
                     name: DB5.spirits[i].namn,
                     price: DB5.spirits[i].prisinklmoms,
                     category: DB5.spirits[i].varugrupp,
-                    alcoholContent: DB5.spirits[i].alkoholhalt
+                    alcoholContent: DB5.spirits[i].alkoholhalt,
+                    quantity: DB5.spirits[i].quantity
                 });
             }
         }
@@ -112,14 +121,16 @@
     }
 
     /**
-     *  Retrieves all beverages that are "Special" from the database.
-     *  Returns:
-     *  array of beverages, where each entry is an object containing:
+     * Retrieves all beverages that are "Special" from the database.
+     * Returns:
+     * array of beverages, where each entry is an object containing:
      *    beverage name,
      *    price,
      *    type,
-     *    alcohol content
-     * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}
+     *    alcohol content,
+     *    quantity
+     * @author Brenda Uga
+     * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
      */
     function allSpecialBeverages() {
 
@@ -132,20 +143,36 @@
                     name: DB5.spirits[i].namn,
                     price: DB5.spirits[i].prisinklmoms,
                     category: DB5.spirits[i].varugrupp,
-                    alcoholContent: DB5.spirits[i].alkoholhalt
+                    alcoholContent: DB5.spirits[i].alkoholhalt,
+                    quantity: DB5.spirits[i].quantity
                 });
             }
         }
         return collector;
     }
 
+    /**
+     * Adds 5 quantity to all items where the current quantity is 0.
+     * @author Brenda Uga
+     */
+    function restock() {
+
+        for (var i = 0; i < DB5.spirits.length; i++) {
+            if (DB5.spirits[i].quantity === '0') {
+                DB5.spirits[i].quantity = '5';
+            }
+        }
+    }
+
+    //@author Brenda Uga
     window.app = window.app || {};
     window.app.dbLoader = {
         allWhiskeyBeverages: allWhiskeyBeverages,
         allWineBeverages: allWineBeverages,
         allBeerBeverages: allBeerBeverages,
         allFood: allFood,
-        allSpecialBeverages: allSpecialBeverages
+        allSpecialBeverages: allSpecialBeverages,
+        restock: restock
     };
 
 })(window);

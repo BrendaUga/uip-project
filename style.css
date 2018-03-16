@@ -1,3 +1,10 @@
+/**
+    CSS file for both views - client and manager.
+    Contributors:
+       - Brenda Uga
+       - Guillermo Martinez Martinez
+ */
+
 /* Variable declarations */
 :root {
     --sidebar-bg-color: #1d263b;
@@ -253,7 +260,7 @@ body {
 }
 
 .menu-item__info {
-    width: 100%;
+    width: 80%;
     font-size: 0.75em;
     color: var(--menu-item-info-color);
     margin: 1% 0 0 0;
@@ -381,6 +388,23 @@ body {
 .order-item__checkbox {
     transform: scale(1.4);
     margin-right: 11px;
+}
+
+.menu-item__quantity {
+    font-size: 0.75em;
+    margin: 1% 0 0 0;
+}
+
+.out-of-stock .menu-item__name {
+    text-decoration: line-through;
+}
+
+.out-of-stock.menu-item {
+    cursor: default;
+}
+
+.out-of-stock.menu-item:hover {
+    background-color: initial;
 }
 
 /**************************\

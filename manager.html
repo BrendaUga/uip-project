@@ -1,3 +1,9 @@
+<!--
+
+Manager view HTML file.
+@author Brenda Uga
+
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,43 +17,48 @@
 
         <nav class="navbar">
             <ul class="nav-tabs">
-                <li class="nav-tab" data-filter="beers">Beers</li>
-                <li class="nav-tab" data-filter="wines">Wines</li>
-                <li class="nav-tab" data-filter="whiskeys">Whiskeys</li>
-                <li class="nav-tab" data-filter="foods">Food</li>
-                <li class="nav-tab" data-filter="specials">Special</li>
+                <li class="nav-tab tr" data-filter="beers" key="beer"></li>
+                <li class="nav-tab tr" data-filter="wines" key="wine"></li>
+                <li class="nav-tab tr" data-filter="whiskeys" key="whiskey"></li>
+                <li class="nav-tab tr" data-filter="foods" key="food"></li>
+                <li class="nav-tab tr" data-filter="specials" key="special"></li>
             </ul>
         </nav>
 
         <div class="menu-content">
             <div class="menu-column" id="menu"></div>
-            <a href="#" type="button" class="sidebar-button restock-button">RESTOCK</a>
+            <a href="#" type="button" class="sidebar-button restock-button tr" key="restock"></a>
         </div>
     </div>
 
     <div class="sidebar-container">
         <div class="sidebar-container__padding">
-            <h1>Current orders</h1>
+            <button id="es" class="lang"><img src="flag_es.png"></button>
+            <button id="ca" class="lang"><img src="flag_cat.png"></button>
+            <button id="sv" class="lang"><img src="flag_sw.png"></button>
+            <button id="en" class="lang"><img src="flag_en.png"></button>
+            <h1 class="tr" key="currentOrders"></h1>
             <div class="order-items-container">
 
             </div>
         </div>
         <div class="sidebar-footer">
-            <a href="#" type="button" class="sidebar-button manager_button" data-option="done">MARK AS DONE</a>
-            <a href="#" type="button" class="sidebar-button manager_button button__link hidden" data-option="undo">Undo</a>
-            <a href="#" type="button" class="sidebar-button manager_button button__link hidden" data-option="redo">Redo</a>
+            <a href="#" type="button" class="sidebar-button manager_button tr" data-option="done" key="markAsDone"></a>
+            <a href="#" type="button" class="sidebar-button manager_button button__link hidden tr" data-option="undo" key="undo"></a>
+            <a href="#" type="button" class="sidebar-button manager_button button__link hidden tr" data-option="redo" key="redo"></a>
         </div>
     </div>
 
     <div class="modal-overlay closed"></div>
     <div class="modal-container closed"></div>
 
-    <script src="Beverages.js"></script>
+    <script src="Goods.js"></script>
     <script src="dbLoader.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous">
     </script>
     <script src="app.js"></script>
+    <script src="languages.js"></script>
 </body>
 </html>

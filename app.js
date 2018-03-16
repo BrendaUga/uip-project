@@ -3,18 +3,26 @@
     var View = {
         /**
          * HTML element (.order-items-container)
+         * @author Brenda Uga
          */
         orderItemsContainer: null,
 
         /**
+         * Currently selected language, by key.
+         * @author Brenda Uga
+         */
+        selectedLanguage: null,
+
+        /**
          * Creates the menu item template that is used to display all the different drinks.
+         * @author Brenda Uga
          * @param drinks, list of drinks in one tab
          * @returns {string}, HTML string to append to the DOM
          */
         menuItemTemplate: function (drinks) {
             var htmlString = '';
             for (var i = 0; i < drinks.length; i++) {
-                htmlString += '<div class="menu-item" draggable="true">' +
+                htmlString += '<div class="menu-item' + (drinks[i].quantity === "0" ? ' out-of-stock' : '') + '" draggable="' + (drinks[i].quantity === "0" ? 'false' : 'true') +'">' +
                     '              <div class="dragger-container">' +
                     '                  <img src="dragger.svg"/>' +
                     '              </div>' +
@@ -55,7 +63,35 @@
         },
 
         /**
+         * Creates the menu item template that is used to display all the different drinks in manager view.
+         * Differs from client view template as this one displays quantities as well.
+         * @author Brenda Uga
+         * @param drinks, list of drinks in one tab
+         * @returns {string}, HTML string to append to the DOM
+         */
+        managerMenuItemTemplate: function (drinks) {
+            var htmlString = '';
+            for (var i = 0; i < drinks.length; i++) {
+                htmlString += '<div class="menu-item' + (drinks[i].quantity === "0" ? ' out-of-stock' : '') + '">' +
+                    '              <div class="dragger-container">' +
+                    '                  <img src="dragger.svg"/>' +
+                    '              </div>' +
+                    '              <div class="menu-item-info-container">' +
+                    '                  <p class="menu-item__name">' +
+                    drinks[i].name +
+                    '                  </p>' +
+                    '                  <p class="menu-item__price">' + drinks[i].price + '.-' + '</p>' +
+                    '                  <p class="menu-item__info">' + drinks[i].category + ', alc. ' + drinks[i].alcoholContent + '</p>' +
+                    '                  <p class="menu-item__quantity">' + drinks[i].quantity + '</p>' +
+                    '              </div>' +
+                    '          </div>'
+            }
+            return htmlString;
+        },
+
+        /**
          * Creates the HTML for the order confirmed modal.
+         * @author Brenda Uga
          * @returns {string} HTML of modal with type 'orderConfirmed', to be appended to DOM
          */
         orderConfirmModalTemplate: function() {
@@ -64,22 +100,41 @@
                 '            <img src="done.svg"/>' +
                 '        </div>' +
                 '        <div class="modal-body-container">' +
-                '            <h1>YOUR ORDER IS ON <br>IT\'S WAY</h1>' +
+                '            <h1 class="tr" key="orderConfirmed">' + View.translate("orderConfirmed") + '</h1>' +
                 '        </div>' +
                 '        <div class="modal-footer-container">' +
-                '            <button type="button" class="button__link close-modal-link">Back to menu</button>' +
+                '            <button type="button" class="button__link close-modal-link tr" key="backToMenu">' + View.translate("backToMenu") + '</button>' +
+                '        </div>';
+        },
+
+        /**
+         * Creates the HTML for the restock confirmed modal.
+         * @author Brenda Uga
+         * @returns {string} HTML of modal with type 'restockConfirmed', to be appended to DOM
+         */
+        restockConfirmedModalTemplate: function() {
+            return '' +
+                '        <div class="modal-header-container">' +
+                '            <img src="done.svg"/>' +
+                '        </div>' +
+                '        <div class="modal-body-container">' +
+                '            <h1 class="tr" key="restockConfirmed">' + View.translate("restockConfirmed") + '</h1>' +
+                '        </div>' +
+                '        <div class="modal-footer-container">' +
+                '            <button type="button" class="button__link close-modal-link tr" key="backToMenu">' + View.translate("backToMenu") + '</button>' +
                 '        </div>';
         },
 
         /**
          * Creates the HTML for current orders.
+         * @author Brenda Uga
          * @param currentOrders List of current orders, where each item is a list of order items in that order.
          * The inner list represents an order item, which has the properties (name, quantity).
          */
         currentOrdersTemplate: function (currentOrders) {
             var htmlString = '';
             for (var i = 0; i < currentOrders.length; i++) {
-                htmlString += '<div class="order-container"><h2 class="order__number">Order ' + i + '</h2>';
+                htmlString += '<div class="order-container"><h2 class="order__number"><span class="tr" key="order">Order</span> ' + i +'</h2>';
 
                 for (var j = 0; j < currentOrders[i].length; j++) {
                     htmlString += '<div class="order-item" data-index="' + i + '_' + j + '">' +
@@ -96,6 +151,7 @@
 
         /**
          * Renders current orders in manager sidebar.
+         * @author Brenda Uga
          * @param currentOrders List of current outstanding orders
          */
         renderCurrentOrders: function (currentOrders) {
@@ -104,11 +160,16 @@
 
         /**
          * Fetches and renders menu layout for given drinks.
+         * @author Brenda Uga
          * @param drinks, list of drinks
          * @param isManager whether we are currently looking at the menu as manager, needed to remove drag and drop from manager view
          */
         renderMenu: function (drinks, isManager) {
-            $('#menu').html(View.menuItemTemplate(drinks));
+            if (isManager) {
+                $('#menu').html(View.managerMenuItemTemplate(drinks));
+            } else {
+                $('#menu').html(View.menuItemTemplate(drinks));
+            }
             View.registerMenuItemListeners(isManager);
         },
 
@@ -123,6 +184,7 @@
       
         /**
          * Renders modals of different types.
+         * @author Brenda Uga
          * Toggles modal and modal overlay, and registers click listeners for closing modal.
          * @param modalType String representing type of modal wanted
          */
@@ -135,6 +197,8 @@
             } else if (modalType === 'creditPayment') {
                 //TODO: implement creditPayment template and render here
                 console.log("Credit payment modal needed here now");
+            } else if (modalType === 'restockConfirmed') {
+                $(modalContainer).html(View.restockConfirmedModalTemplate());
             }
 
             $(modalContainer).removeClass('closed');
@@ -147,6 +211,7 @@
 
         /**
          * Renders spinner with dark overlay.
+         * @author Brenda Uga
          */
         renderSpinner: function () {
             $('.modal-overlay').removeClass('closed');
@@ -155,6 +220,7 @@
 
         /**
          * Closes spinner and dark overlay.
+         * @author Brenda Uga
          */
         closeSpinner: function () {
             $('.spinner').addClass('closed');
@@ -162,7 +228,8 @@
         },
 
         /**
-         * Registers menu item listeners. Registers 'dragstart', 'dragend' and 'click' listeners currently.
+         * Registers menu item listeners. Registers 'dragstart' and 'dragend' listeners currently.
+         * @author Brenda Uga
          */
         registerMenuItemListeners: function(isManager) {
             if (!isManager) {
@@ -182,20 +249,14 @@
                 menuItems.on('dragend', function (e) {
                     $(View.orderItemsContainer).removeClass('over');
                 });
-
-                menuItems.on('click', function (e) {
-                    var source = e.target;
-                    var targetName = $(source).find('.menu-item__name').html();
-                    var targetPrice = $(source).find('.menu-item__price').html().split('.')[0];
-
-                    View.addNewOrderItem(targetName, targetPrice);
-                });
             }
         },
 
         /**
          * Contains functions to be run when document is loaded.
          * Registers drag events (dragover, dragenter and drop) on orderItemsContainer.
+         * Registers language selection click listener.
+         * @author Brenda Uga
          */
         onLoaded: function() {
             View.orderItemsContainer = $('.order-items-container');
@@ -219,6 +280,15 @@
                 return false;
             });
 
+            $('.lang').on('click', function() {
+                var lang = $(this).attr('id'); // obtain language id
+                View.selectedLanguage = lang;
+                // translate all translatable elements
+                $('.tr').each(function() {
+                    $(this).text(LangTrans[lang][ $(this).attr('key') ]);
+                });
+            });
+
             $(function() {
                 $('#en').trigger('click');
             });
@@ -226,9 +296,38 @@
         },
 
         /**
+         * Translate function for when we need a specific string translated to current selected language.
+         * @author Brenda Uga
+         */
+        translate: function(key) {
+            return LangTrans[View.selectedLanguage][key];
+        },
+
+        /**
+         * Functions to be run when manager view is loaded.
+         * This is different from client view onLoaded, because we render different things onLoad.
+         * @author Brenda Uga
+         */
+        onManagerViewLoaded: function() {
+            $(function() {
+                $('#en').trigger('click');
+            });
+
+            $('.lang').on('click', function() {
+                var lang = $(this).attr('id'); // obtain language id
+                View.selectedLanguage = lang;
+                // translate all translatable elements
+                $('.tr').each(function() {
+                    $(this).text(LangTrans[lang][ $(this).attr('key') ]);
+                });
+            });
+        },
+
+        /**
          * Adds new order item to order sidebar.
          * Takes in name and price of item to be added, creates HTML template and appends it to orderItemsContainer.
          * Additionally, calculates new total of order and renders it.
+         * @author Brenda Uga
          * @param name, name of new item
          * @param price, price of new item
          */
@@ -264,7 +363,8 @@
          *      markedAsDone - when 'Mark as done' is clicked
          *      undo - when 'Undo' is clicked
          *      redo - when 'Redo' is clicked
-         *
+         *      restock - when 'Restock' is clicked
+         * @author Brenda Uga
          * @param {string} eventType, event type name
          * @param {Function} callback, callback to be run in Controller when event happens
          */
@@ -279,7 +379,9 @@
             } else if (eventType === 'paymentOptionClicked') {
                 $('.sidebar-button').on('click', function (e) {
                     var paymentOption = e.target.dataset.option;
-                    callback(paymentOption);
+
+                    var orders = document.querySelectorAll('.order-item__name');
+                    callback(paymentOption, orders);
                 });
             } else if (eventType === 'markedAsDone') {
                 $('.manager_button[data-option="done"]').on('click', function () {
@@ -298,11 +400,18 @@
                 $('.manager_button[data-option="redo"]').on('click', function() {
                     callback();
                 });
+            } else if (eventType === 'restock') {
+                $('.restock-button').on('click', function () {
+                    View.renderModal('restockConfirmed');
+                    var activeTab = $('.nav-tab.active').html();
+                    callback(activeTab);
+                });
             }
         },
 
         /**
          * Disables undo button in manager view.
+         * @author Brenda Uga
          */
         disableUndoButton: function () {
             $('.manager_button[data-option="undo"]').addClass('hidden');
@@ -310,6 +419,7 @@
 
         /**
          * Enables undo button in manager view.
+         * @author Brenda Uga
          */
         enableUndoButton: function () {
             $('.manager_button[data-option="undo"]').removeClass('hidden');
@@ -317,6 +427,7 @@
 
         /**
          * Disables redo button in manager view.
+         * @author Brenda Uga
          */
         disableRedoButton: function () {
             $('.manager_button[data-option="redo"]').addClass('hidden');
@@ -324,6 +435,7 @@
 
         /**
          * Enables redo button in manager view.
+         * @author Brenda Uga
          */
         enableRedoButton: function () {
             $('.manager_button[data-option="redo"]').removeClass('hidden');
@@ -334,11 +446,13 @@
 
         /**
          * Boolean representing whether we are currently in manager view or not.
+         * @author Brenda Uga
          */
         isManager: false,
 
         /**
          * Holds state of current orders and history.
+         * @author Brenda Uga
          */
         state: {
             currentOrders: [],
@@ -348,24 +462,22 @@
 
         /**
          * Contains functions to be run when document is loaded.
+         * @author Brenda Uga
          */
         onLoaded: function() {
             // Checks whether we are in client or manager view, needed to display correct sidebar.
             if (window.location.href.indexOf('manager.html') === -1) {
                 View.onLoaded();
             } else if (window.location.href.indexOf('manager.html') !== -1) {
+                View.onManagerViewLoaded();
                 Controller.isManager = true;
-                // TODO: Get current orders list from localStorage
                 var currentOrders = [
-                    [
-                        { 'name': 'Ale', 'quantity': 2 },
-                        { 'name': 'Lager', 'quantity': 1 }
-                    ],
                     [
                         { 'name': 'White wine', 'quantity': 1 },
                         { 'name': 'Red wine', 'quantity': 2 }
-                    ],
+                    ]
                 ];
+                currentOrders.push(JSON.parse(window.localStorage.getItem('order')));
 
                 Controller.state.currentOrders = currentOrders;
                 Controller.state.history.push(currentOrders);
@@ -374,33 +486,36 @@
 
             /**
              * Registers listener in View, handles menu tab clicks.
+             * @author Brenda Uga
              */
             View.registerEventHandler('menuFilterClicked', function (filter) {
                 if (filter === 'whiskeys') {
                     Controller.loadWhiskeys()
                 }
 
-                else if(filter === 'wines'){
+                else if(filter === 'wines') {
                     Controller.loadWines()
                 }
 
-                else if (filter === 'beers'){
+                else if (filter === 'beers') {
                     Controller.loadBeers()
                 }
 
-                else if (filter === 'foods'){
+                else if (filter === 'foods') {
                     Controller.loadFoods()
                 }
 
-                else if (filter ==='specials'){
+                else if (filter ==='specials') {
                     Controller.loadSpecials()
                 }
             });
 
             /**
              * Registers listener in View, handles payment option button clicks.
+             * Saves order to localStorage, so we can access it in manager view.
+             * @author Brenda Uga
              */
-            View.registerEventHandler('paymentOptionClicked', function (option) {
+            View.registerEventHandler('paymentOptionClicked', function (option, order) {
                 if (option === 'card') {
                     View.renderSpinner();
                     setTimeout(function() {
@@ -410,12 +525,34 @@
                 } else if (option === 'credit') {
                     View.renderModal('creditPayment');
                 }
+
+                // Create suitable data structure for manager view to parse orders from.
+                var storedOrder = [];
+                [].forEach.call(order, function(item) {
+                    var name = item.innerText;
+                    var found = false;
+                    for (var i = 0; i < storedOrder.length; i++) {
+                        if (storedOrder[i].name === name) {
+                            storedOrder[i].quantity++;
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        var orderItem =  {"name": name, "quantity": 1};
+                        storedOrder.push(orderItem);
+                    }
+                });
+
+                // Save to localStorage
+                window.localStorage.setItem('order', JSON.stringify(storedOrder));
+
             });
 
             /**
              * Registers listener in View, handles 'Mark as done' button click in manager view.
              * Checks for items that remain after being marked done and creates a new state with those.
              * New state is pushed to currentOrders and state history.
+             * @author Brenda Uga
              */
             View.registerEventHandler('markedAsDone', function (checkedItems) {
                 var newOrdersList = [];
@@ -434,6 +571,7 @@
                 }
                 //Update current state and history of states
                 Controller.state.position = Math.min(Controller.state.position, Controller.state.history.length - 1);
+
                 // Slice is needed to insert into current position after some undos (not into the state before undos)
                 Controller.state.history = Controller.state.history.slice(0, Controller.state.position + 1);
                 Controller.state.history.push(newOrdersList);
@@ -449,6 +587,7 @@
             /**
              * Registers listener in View, handles 'Undo' button click in manager view.
              * Manages state history and current state to enable undo functionality.
+             * @author Brenda Uga
              */
             View.registerEventHandler('undo', function() {
                 if (!Controller.canUndo()) {
@@ -468,6 +607,7 @@
             /**
              * Registers listener in View, handles 'Redo' button click in manager view.
              * Manages state history and current state to enable redo functionality.
+             * @author Brenda Uga
              */
             View.registerEventHandler('redo', function() {
                 if (!Controller.canRedo()) {
@@ -483,10 +623,21 @@
                 }
             });
 
+            /**
+             * Registers listener in View, handles 'Restock' button click in manager view.
+             * Sets the quantity of items to max in database.
+             * @author Brenda Uga
+             */
+            View.registerEventHandler('restock', function (activeTab) {
+                Model.restock();
+                Controller['load' + activeTab + 's']();
+            });
+
         },
 
         /**
          * Loads whiskey type drinks from Model and renders them in the View.
+         * @author Brenda Uga
          */
         loadWhiskeys: function () {
             var whiskeyDrinks = Model.fetchWhiskeys();
@@ -511,6 +662,7 @@
 
         /**
          * Checks if undo is possible.
+         * @author Brenda Uga
          * @returns {boolean} Whether undo can be done
          */
         canUndo: function() {
@@ -519,6 +671,7 @@
 
         /**
          * Checks if redo is possible.
+         * @author Brenda Uga
          * @returns {boolean} Whether redo can be done
          */
         canRedo: function () {
@@ -538,7 +691,7 @@
          */
         loadSpecials: function () {
             var specialDrinks = Model.fetchSpecials();
-            View.renderMenu(specialDrinks)
+            View.renderMenu(specialDrinks, Controller.isManager);
         }
     };
 
@@ -547,7 +700,8 @@
 
         /**
          * Fetches whiskey type drinks from the DB.
-         * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}, list of drink objects
+         * @author Brenda Uga
+         * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}, list of drink objects
          */
         fetchWhiskeys: function() {
             return window.app.dbLoader.allWhiskeyBeverages();
@@ -555,7 +709,7 @@
 
         /**
          * Fetches wine type drinks from the DB.
-         * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}, list of drink objects
+         * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}, list of drink objects
          */
         fetchWines: function() {
             return window.app.dbLoader.allWineBeverages();
@@ -563,7 +717,7 @@
 
         /**
          * Fetches beer type drinks from the DB.
-         * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}, list of drink objects
+         * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}, list of drink objects
          */
         fetchBeers: function(){
             return window.app.dbLoader.allBeerBeverages();
@@ -579,15 +733,24 @@
 
         /**
          * Fetches special type drinks from the DB.
-         * @returns {{name: string, price: string, category: string, alcoholContent: string}[]}
+         * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
          */
         fetchSpecials: function(){
             return window.app.dbLoader.allSpecialBeverages();
+        },
+
+        /**
+         * Restocks quantities in database.
+         * @author Brenda Uga
+         */
+        restock: function() {
+            window.app.dbLoader.restock();
         }
 
     };
 
     // Registers namespaces in window object.
+    // @author Brenda Uga
     window.app = window.app || {};
     window.app.View = View;
     window.app.Controller = Controller;
