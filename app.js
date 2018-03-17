@@ -186,6 +186,10 @@
                 $('#en').trigger('click');
             });
 
+            $(function() {
+                $('#beerbutton').trigger('click');
+            });
+
         },
 
         /**
