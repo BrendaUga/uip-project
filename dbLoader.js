@@ -164,6 +164,41 @@
         }
     }
 
+    /**
+     * Decreases the amounts on the specified drinks.
+     * @author Brenda Uga
+     * @param orderedItems object containing drink name and quantity ordered
+     */
+    function decreaseAmounts(orderedItems) {
+        for (var i = 0; i < orderedItems.length; i++) {
+            var drinkInDb = DB5.spirits.filter(drink => drink.namn === orderedItems[i].name)[0];
+            var newQuantity = drinkInDb.quantity - orderedItems[i].quantity;
+            drinkInDb.quantity = '' + newQuantity;
+        }
+    }
+
+    /**
+     * Retrieves all beverages and their quantities from the DB.
+     * Returns:
+     * array of beverages, where each entry is an object containing:
+     *    beverage name,
+     *    quantity
+     * @author Brenda Uga
+     * @returns {{name: string, quantity: string}[]}
+     */
+    function allBeverages() {
+
+        var collector = [];
+
+        for (var i = 0; i < DB5.spirits.length; i++) {
+            collector.push({
+                name: DB5.spirits[i].namn,
+                quantity: DB5.spirits[i].quantity
+            });
+        }
+        return collector;
+    }
+
     //@author Brenda Uga
     window.app = window.app || {};
     window.app.dbLoader = {
@@ -172,7 +207,9 @@
         allBeerBeverages: allBeerBeverages,
         allFood: allFood,
         allSpecialBeverages: allSpecialBeverages,
-        restock: restock
+        allBeverages: allBeverages,
+        restock: restock,
+        decreaseAmounts: decreaseAmounts
     };
 
 })(window);

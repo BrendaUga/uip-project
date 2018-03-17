@@ -30,6 +30,7 @@ LangTrans['en']['order']='Order';
 LangTrans['en']['orderConfirmed']='YOUR ORDER IS ON <br>IT\'S WAY</h1>';
 LangTrans['en']['restockConfirmed']='RESTOCK CONFIRMED<br>Your items are on it\'s way!';
 LangTrans['en']['backToMenu']='Back to menu';
+LangTrans['en']['notEnoughStock']='The items in your order <br>do not have enough of them <br>in stock!';
 
 LangTrans['sv']['beer']='Öl';
 LangTrans['sv']['wine']='Vin';
@@ -49,6 +50,7 @@ LangTrans['sv']['order']='Ordning';
 LangTrans['sv']['orderConfirmed']='DIN BESTÄLLNING ÄR <br>PÅ VÄG</h1>';
 LangTrans['sv']['restockConfirmed']='RESTOCK BEKRÄFTAT<br>Dina föremäl är på väg!';
 LangTrans['sv']['backToMenu']='Tillbaka till menyn';
+LangTrans['sv']['notEnoughStock']='De varor i din beställning <br>har inte tillräckligt med dem <br>i lager!';
 
 LangTrans['ca']['beer']='Cervesa';
 LangTrans['ca']['wine']='Vi';
@@ -68,6 +70,7 @@ LangTrans['ca']['order']='Comande';
 LangTrans['ca']['orderConfirmed']='EL SEU ORDRE ES <br>DE LA SEVA FORMA</h1>';
 LangTrans['ca']['restockConfirmed']='RESTOIX CONFIRMAT<br>Els vostres articles estan en camí!';
 LangTrans['ca']['backToMenu']='Tornar al menú';
+LangTrans['ca']['notEnoughStock']='Els articles del vostre ordre <br>no tenen prou d\'ells <br>en estoc!';
 
 LangTrans['es']['beer']='Õlu';
 LangTrans['es']['wine']='Vein';
@@ -87,3 +90,4 @@ LangTrans['es']['order']='Tellimus';
 LangTrans['es']['orderConfirmed']='SINU TELLIMUS ON <br>TEGEMISES</h1>';
 LangTrans['es']['restockConfirmed']='VARUD TELLITUD<br>Varud on teel!';
 LangTrans['es']['backToMenu']='Tagasi menüüsse';
+LangTrans['es']['notEnoughStock']='Tellitud tooteid ei ole piisavalt varus!';

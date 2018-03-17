@@ -27,11 +27,10 @@
                     '                  <img src="dragger.svg"/>' +
                     '              </div>' +
                     '              <div class="menu-item-info-container">' +
-                    '                  <p class="menu-item__name">' +
-                                            drinks[i].name +
-                    '                  </p>' +
+                    '                  <p class="menu-item__name">' + drinks[i].name + '</p>' +
                     '                  <p class="menu-item__price">' + drinks[i].price + '.-' + '</p>' +
                     '                  <p class="menu-item__info">' + drinks[i].category + ', alc. ' + drinks[i].alcoholContent + '</p>' +
+                    '                  <p class="menu-item__quantity">' + drinks[i].quantity + '</p>' +
                     '              </div>' +
                     '          </div>'
             }
@@ -56,33 +55,6 @@
                     '                  </p>' +
                     '                  <p class="menu-item__price">' + foods[i].price + '.-' + '</p>' +
                     '                  <p class="menu-item__info">' + foods[i].description + '</p>' +
-                    '              </div>' +
-                    '          </div>'
-            }
-            return htmlString;
-        },
-
-        /**
-         * Creates the menu item template that is used to display all the different drinks in manager view.
-         * Differs from client view template as this one displays quantities as well.
-         * @author Brenda Uga
-         * @param drinks, list of drinks in one tab
-         * @returns {string}, HTML string to append to the DOM
-         */
-        managerMenuItemTemplate: function (drinks) {
-            var htmlString = '';
-            for (var i = 0; i < drinks.length; i++) {
-                htmlString += '<div class="menu-item' + (drinks[i].quantity === "0" ? ' out-of-stock' : '') + '">' +
-                    '              <div class="dragger-container">' +
-                    '                  <img src="dragger.svg"/>' +
-                    '              </div>' +
-                    '              <div class="menu-item-info-container">' +
-                    '                  <p class="menu-item__name">' +
-                    drinks[i].name +
-                    '                  </p>' +
-                    '                  <p class="menu-item__price">' + drinks[i].price + '.-' + '</p>' +
-                    '                  <p class="menu-item__info">' + drinks[i].category + ', alc. ' + drinks[i].alcoholContent + '</p>' +
-                    '                  <p class="menu-item__quantity">' + drinks[i].quantity + '</p>' +
                     '              </div>' +
                     '          </div>'
             }
@@ -119,6 +91,24 @@
                 '        </div>' +
                 '        <div class="modal-body-container">' +
                 '            <h1 class="tr" key="restockConfirmed">' + View.translate("restockConfirmed") + '</h1>' +
+                '        </div>' +
+                '        <div class="modal-footer-container">' +
+                '            <button type="button" class="button__link close-modal-link tr" key="backToMenu">' + View.translate("backToMenu") + '</button>' +
+                '        </div>';
+        },
+
+        /**
+         * Creates the HTML for the not enough stock modal.
+         * @author Brenda Uga
+         * @returns {string} HTML of modal with type 'notEnoughStock', to be appended to DOM
+         */
+        notEnoughStockModalTemplate: function () {
+            return '' +
+                '        <div class="modal-header-container">' +
+                '            <img src="done.svg"/>' +
+                '        </div>' +
+                '        <div class="modal-body-container">' +
+                '            <h1 class="tr" key="notEnoughStock">' + View.translate("notEnoughStock") + '</h1>' +
                 '        </div>' +
                 '        <div class="modal-footer-container">' +
                 '            <button type="button" class="button__link close-modal-link tr" key="backToMenu">' + View.translate("backToMenu") + '</button>' +
@@ -165,11 +155,7 @@
          * @param isManager whether we are currently looking at the menu as manager, needed to remove drag and drop from manager view
          */
         renderMenu: function (drinks, isManager) {
-            if (isManager) {
-                $('#menu').html(View.managerMenuItemTemplate(drinks));
-            } else {
-                $('#menu').html(View.menuItemTemplate(drinks));
-            }
+            $('#menu').html(View.menuItemTemplate(drinks));
             View.registerMenuItemListeners(isManager);
         },
 
@@ -181,11 +167,11 @@
             $('#menu').html(View.menuItemFoodTemplate(foods));
             View.registerMenuItemListeners();
         },
-      
+
         /**
          * Renders modals of different types.
-         * @author Brenda Uga
          * Toggles modal and modal overlay, and registers click listeners for closing modal.
+         * @author Brenda Uga
          * @param modalType String representing type of modal wanted
          */
         renderModal: function (modalType) {
@@ -199,6 +185,8 @@
                 console.log("Credit payment modal needed here now");
             } else if (modalType === 'restockConfirmed') {
                 $(modalContainer).html(View.restockConfirmedModalTemplate());
+            } else if (modalType === 'notEnoughStock') {
+                $(modalContainer).html(View.notEnoughStockModalTemplate());
             }
 
             $(modalContainer).removeClass('closed');
@@ -345,14 +333,27 @@
             $(orderTotalPrice).html(currentTotalPrice + '.-');
 
             $(removeButton).on('click', function(e) {
-                var orderItemPrice = $(e.target).parent().parent().find('.order-item__price')[0].innerHTML.split('.')[0];
-                var currentTotalPrice = $(orderTotalPrice).html().length
-                    ? parseInt($(orderTotalPrice).html().split('.')[0])
-                    : 0;
-                var newOrderTotalPrice = currentTotalPrice - orderItemPrice;
-                $(orderTotalPrice).html(newOrderTotalPrice + '.-');
                 $(e.target).parents('.order-item').remove();
+                View.updateTotalInSidebar();
             });
+        },
+
+        /**
+         * Updates total sum in sidebar.
+         * @author Brenda Uga
+         */
+        updateTotalInSidebar: function () {
+            var orderItemPriceElems = $('.order-item__price');
+            if (orderItemPriceElems.length === 0) {
+                $('.order-total__price').html('');
+            } else {
+                var orderTotalPrice = $('.order-total__price');
+                var total = 0;
+                orderItemPriceElems.each(function () {
+                    total += parseInt($( this ).html().split('.')[0]);
+                });
+                orderTotalPrice.html(total + '.-');
+            }
         },
 
         /**
@@ -381,7 +382,8 @@
                     var paymentOption = e.target.dataset.option;
 
                     var orders = document.querySelectorAll('.order-item__name');
-                    callback(paymentOption, orders);
+                    var activeTab = $('.nav-tab.active').html();
+                    callback(paymentOption, orders, activeTab);
                 });
             } else if (eventType === 'markedAsDone') {
                 $('.manager_button[data-option="done"]').on('click', function () {
@@ -439,7 +441,15 @@
          */
         enableRedoButton: function () {
             $('.manager_button[data-option="redo"]').removeClass('hidden');
+        },
+
+        /**
+         * Empties the order sidebar after order is placed
+         */
+        emptySidebar: function () {
+            $('.order-items-container').html('');
         }
+
     };
 
     var Controller = {
@@ -473,8 +483,8 @@
                 Controller.isManager = true;
                 var currentOrders = [
                     [
-                        { 'name': 'White wine', 'quantity': 1 },
-                        { 'name': 'Red wine', 'quantity': 2 }
+                        { 'name': 'Nils Oscar', 'quantity': 1 },
+                        { 'name': 'Brunello di Montalcino', 'quantity': 2 }
                     ]
                 ];
                 currentOrders.push(JSON.parse(window.localStorage.getItem('order')));
@@ -515,16 +525,8 @@
              * Saves order to localStorage, so we can access it in manager view.
              * @author Brenda Uga
              */
-            View.registerEventHandler('paymentOptionClicked', function (option, order) {
-                if (option === 'card') {
-                    View.renderSpinner();
-                    setTimeout(function() {
-                        View.closeSpinner();
-                        View.renderModal('orderConfirm');
-                    }, 5000);
-                } else if (option === 'credit') {
-                    View.renderModal('creditPayment');
-                }
+            View.registerEventHandler('paymentOptionClicked', function (option, order, activeTab) {
+                var beverages = window.app.Model.fetchAllBeverages();
 
                 // Create suitable data structure for manager view to parse orders from.
                 var storedOrder = [];
@@ -543,8 +545,42 @@
                     }
                 });
 
+                var orderCorrect = storedOrder.every(function (orderItem) {
+                    var beverage = beverages.find(function (beverage) {
+                        return beverage.name === orderItem.name && beverage.quantity >= orderItem.quantity;
+                    });
+                    return !!beverage;
+                });
+
+                // If the order contains more of any item than it has in stock, we display warning and break out of checkout flow.
+                if (!orderCorrect) {
+                    View.renderModal('notEnoughStock');
+                    return;
+                }
+
+                if (option === 'card') {
+                    View.renderSpinner();
+                    setTimeout(function() {
+                        View.closeSpinner();
+                        View.renderModal('orderConfirm');
+                    }, 5000);
+                } else if (option === 'credit') {
+                    View.renderModal('creditPayment');
+                    // TODO: check if credit is enough, if yes then decrease credit, otherwise show message that not enough funds
+                }
+
                 // Save to localStorage
                 window.localStorage.setItem('order', JSON.stringify(storedOrder));
+
+                // Decrease amounts in stock
+                window.app.Model.decreaseAmounts(storedOrder);
+
+                // Render active tab again to show updated quantities
+                Controller['load' + activeTab + 's']();
+
+                // Empty the orders sidebar
+                View.emptySidebar();
+                View.updateTotalInSidebar();
 
             });
 
@@ -745,6 +781,23 @@
          */
         restock: function() {
             window.app.dbLoader.restock();
+        },
+
+        /**
+         * Decreases amounts in DB on items in orderedItems, by the quantity specified in orderedItems.
+         * @author Brenda Uga
+         * @param orderedItems object of names and quantities
+         */
+        decreaseAmounts: function (orderedItems) {
+            window.app.dbLoader.decreaseAmounts(orderedItems);
+        },
+
+        /**
+         * Fetches all beverages from the DB.
+         * @author Brenda Uga
+         */
+        fetchAllBeverages: function () {
+            return window.app.dbLoader.allBeverages();
         }
 
     };
