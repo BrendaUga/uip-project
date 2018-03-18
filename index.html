@@ -1,20 +1,27 @@
+<!--
+
+Index file that contains the client's view.
+
+@author Brenda Uga
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="menu-container">
 
         <nav class="navbar">
             <ul class="nav-tabs">
-                <li class="nav-tab tr" data-filter="beers" key="beer"></li>
-                <li class="nav-tab tr" data-filter="wines" key="wine"></li>
-                <li class="nav-tab tr" data-filter="whiskeys" key="whiskey"></li>
-                <li class="nav-tab tr" data-filter="foods" key="food"></li>
-                <li class="nav-tab tr" data-filter="specials" key="special"></li>
+                <li class="nav-tab tr" data-filter="beers" key="beer" id="beerbutton"></li>
+                <li class="nav-tab tr" data-filter="wines" key="wine" id="winebutton"></li>
+                <li class="nav-tab tr" data-filter="whiskeys" key="whiskey" id="whiskeybutton"></li>
+                <li class="nav-tab tr" data-filter="foods" key="food" id="foodbutton"></li>
+                <li class="nav-tab tr" data-filter="specials" key="special" id="specialbutton"></li>
             </ul>
         </nav>
 
@@ -77,19 +84,14 @@
         </div>
     </div>
 
-    <div class="modal-overlay closed"></div>
-    <div class="modal-container closed">
-        <div class="modal-header-container">
-            <img src="done.svg"/>
-        </div>
-        <div class="modal-body-container">
-            <h1>YOUR ORDER IS ON <br>IT'S WAY</h1>
-        </div>
-        <div class="modal-footer-container">
-            <button type="button" class="button__link close-modal-link">Back to menu</button>
-        </div>
+    <div class="spinner closed">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
     </div>
 
+    <div class="modal-overlay closed"></div>
+    <div class="modal-container closed"></div>
 <script src="Goods.js"></script>
 <script src="dbLoader.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -98,11 +100,6 @@
 </script>
 <script src="login.js" ></script>
 <script src="app.js"></script>
-<script src="languages.js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#en').trigger('click');
-    });
-</script>
+<script src ="languages.js"></script>
 </body>
 </html>

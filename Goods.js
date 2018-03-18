@@ -25,7 +25,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "6"
         }, {
             "nr": "423302",
             "artikelid": "193327",
@@ -51,7 +52,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "7"
         }, {
             "nr": "434501",
             "artikelid": "674391",
@@ -77,7 +79,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "10"
         }, {
             "nr": "459202",
             "artikelid": "643406",
@@ -103,7 +106,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "0"
         }, {
             "nr": "524401",
             "artikelid": "189567",
@@ -129,7 +133,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "8"
         }, {
             "nr": "8113306",
             "artikelid": "31594",
@@ -155,7 +160,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "30"
         }, {
             "nr": "159803",
             "artikelid": "1194",
@@ -181,7 +187,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "65"
         }, {
             "nr": "130503",
             "artikelid": "29638",
@@ -207,7 +214,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "22"
         }, {
             "nr": "146403",
             "artikelid": "164990",
@@ -233,7 +241,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "26"
         }, {
             "nr": "8900203",
             "artikelid": "653568",
@@ -259,7 +268,8 @@ var DB5 = {
             "sortiment": "TSLS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "16"
         }, {
             "nr": "8900503",
             "artikelid": "541606",
@@ -285,7 +295,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "20"
         }, {
             "nr": "8900603",
             "artikelid": "650516",
@@ -311,7 +322,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "24"
         }, {
             "nr": "8999101",
             "artikelid": "443090",
@@ -337,7 +349,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "6"
         }, {
             "nr": "142801",
             "artikelid": "781421",
@@ -363,7 +376,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "0"
         }, {
             "nr": "8484001",
             "artikelid": "819254",
@@ -389,7 +403,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "6"
         }, {
             "nr": "1143701",
             "artikelid": "833942",
@@ -415,7 +430,8 @@ var DB5 = {
             "sortiment": "TSE",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "7"
         }, {
             "nr": "1068701",
             "artikelid": "850445",
@@ -441,7 +457,8 @@ var DB5 = {
             "sortiment": "FSN",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "4"
         }, {
             "nr": "1047601",
             "artikelid": "703109",
@@ -467,7 +484,8 @@ var DB5 = {
             "sortiment": "TSE",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "5"
         }, {
             "nr": "53601",
             "artikelid": "496",
@@ -493,7 +511,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "4"
         }, {
             "nr": "57402",
             "artikelid": "12581",
@@ -519,7 +538,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "0"
         }, {
             "nr": "3901",
             "artikelid": "84",
@@ -545,7 +565,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "special",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "6"
         }, {
             "nr": "8650404",
             "artikelid": "346896",
@@ -571,7 +592,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "0",
             "special": "special",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "5"
         }, {
             "nr": "9801",
             "artikelid": "176",
@@ -597,7 +619,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "special",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "16"
         }, {
             "nr": "8758901",
             "artikelid": "778365",
@@ -623,7 +646,8 @@ var DB5 = {
             "sortiment": "BS",
             "ekologisk": "1",
             "special": "special",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "10"
         }, {
             "nr": "70901",
             "artikelid": "259064",
@@ -649,7 +673,8 @@ var DB5 = {
             "sortiment": "FS",
             "ekologisk": "0",
             "special": "special",
-            "koscher": "0"
+            "koscher": "0",
+            "quantity": "8"
         }],
 
     "foods"     :
