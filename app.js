@@ -280,6 +280,10 @@
             $(function() {
                 $('#en').trigger('click');
             });
+          
+            $(function() {
+                $('#beerbutton').trigger('click');
+            });
 
         },
 
@@ -299,6 +303,9 @@
         onManagerViewLoaded: function() {
             $(function() {
                 $('#en').trigger('click');
+            });
+            $(function() {
+                $('#beerbutton').trigger('click');
             });
 
             $('.lang').on('click', function() {
