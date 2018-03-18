@@ -1,5 +1,5 @@
 # uip-project
-UI programming I project. This project implements a client and manager ordering system in the Flying Dutchman pub.
+UI programming I project by group The Seasick Captain. This project implements a client and manager ordering system in the Flying Dutchman pub.
 
 
 All code is sufficiently commented and the contributors' names are shown on parts they wrote.
