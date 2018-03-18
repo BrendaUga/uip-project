@@ -273,9 +273,10 @@ body {
 
 .modal-container {
     position: fixed;
-    right: 38%;
-    top: 18%;
+    left: 50%;
+    top: 50%;
     height: 50%;
+    transform: translate(-50%, -50%);
     z-index: 2;
     padding: 4%;
     display: flex;
@@ -332,7 +333,7 @@ body {
     margin: 0 auto;
 }
 
-.sidebar-button.manager_button:not(.button__link) {
+.sidebar-button.manager_button:not(.button__link):not(.restock-button) {
     display: block;
     padding: 4%;
     font-weight: bold;
@@ -348,7 +349,7 @@ body {
     bottom: 2%;
     left: 28%;
     margin: 0 auto;
-    width: 7%;
+    width: auto;
     padding: 1% 2%;
     font-size: 1em;
     text-align: center;
@@ -414,9 +415,9 @@ body {
 
 .spinner {
     position: fixed;
-    top: 35%;
-    right: 50%;
-    margin: 100px auto 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 70px;
     text-align: center;
     z-index: 2;
@@ -510,6 +511,7 @@ body {
     }
 
     .sidebar-button {
+        width: auto;
         border-radius: 3px;
     }
 
@@ -524,10 +526,19 @@ body {
 
     .modal-container {
         height: 60%;
-        right: 3%;
+        padding: 5%;
+        width: 90%;
     }
 
     .modal-overlay {
         background-color: rgba(0, 0, 0, 0.75);
+    }
+
+    .restock-button {
+        top: 54%;
+        left: 50%;
+        bottom: initial;
+        transform: translate(-54%, -50%);
+        padding: 2% 4%;
     }
 }
