@@ -465,4 +465,69 @@ body {
           transform: scale(1.0);
     }
 }
+/**************************\
+      RESPONSIVENESS
+\**************************/
 
+@media all and (max-width: 768px) {
+
+    body {
+        flex-direction: column;
+        overflow: visible;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
+    .menu-container {
+        height: 60vh;
+        flex: none;
+    }
+
+    .menu-content {
+        padding-top: var(--navbar-height);
+    }
+
+    .sidebar-container {
+        height: 40%;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .sidebar-container__padding {
+        padding: 2% 5% 0 5%;
+        overflow: scroll;
+    }
+
+    .sidebar-container__padding h1 {
+        font-size: 1.3em;
+        visibility: hidden;
+    }
+
+    .sidebar-button {
+        border-radius: 3px;
+    }
+
+    .menu-item {
+        flex: 0 100%;
+        padding: 3% 3% 3% 2%;
+    }
+
+    .order-items-container {
+        overflow-y: initial;
+    }
+
+    .modal-container {
+        height: 60%;
+        right: 3%;
+    }
+
+    .modal-overlay {
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+}
