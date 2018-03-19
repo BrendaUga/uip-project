@@ -116,6 +116,43 @@
         },
 
         /**
+         * Creates the HTML for the login modal.
+         * @author Guillermo Martinez
+         * @returns {string} HTML of modal with type 'login',
+         */
+        loginModalTemplate: function () {
+            return '' +
+                '    <div id="loginModal" class="modal">' +
+                '       <div class="modal_content">' +
+                '            <div class="modal_header">' +
+                '                <span class="closeBtn">&times;</span>' +
+                '            </div>' +
+                '            <div class="modal_body">' +
+                '                <h1 id="modalHeaderH1" key="loginWelcome">' + View.translate("loginWelcome") + '</h1>' +
+                '                <form name="loginForm" method="post">' +
+                '                   <div id="form_elements" style="width: 100%">' +
+                '                        <div id="userPassWrapper">' +
+                '                           <div class="login_text">Username</div>' +
+                '                           <input id="usernameField" type=text list=users name="userId" >' +
+                '                           <datalist id=users>' +
+                '                               <option> Charlie (VIP Client)' +
+                '                               <option> Bob (VIP Client)' +
+                '                               <option> Alice (Manager)' +
+                '                           </datalist>' +
+                '                           <div class="login_text">Password</div>' +
+                '                           <input id="passwordField" type="Password" name="pwd"></td>' +
+                '                        </div>' +
+                '                        <div id="sendLogInBtnWrapper">' +
+                '                            <input id="sendLogInBtn" type="button" onclick="return validateUser(this.form)" value="Log In">' +
+                '                        </div>' +
+                '                    </div>' +
+                '                </form>' +
+                '            </div>' +
+                '       </div>' +
+                '   </div>';
+        },
+
+        /**
          * Creates the HTML for current orders.
          * @author Brenda Uga
          * @param currentOrders List of current orders, where each item is a list of order items in that order.
@@ -187,6 +224,8 @@
                 $(modalContainer).html(View.restockConfirmedModalTemplate());
             } else if (modalType === 'notEnoughStock') {
                 $(modalContainer).html(View.notEnoughStockModalTemplate());
+            } else if (modalType === 'login') {
+                $(modalContainer).html(View.loginModalTemplate());
             }
 
             $(modalContainer).removeClass('closed');
@@ -478,6 +517,12 @@
         },
 
         /**
+         * Boolean representing whether the modal for the login is openned from the specials tab or the login button
+         * @author Guillermo Martinez
+         */
+        modalFromSpecials: false,
+
+        /**
          * Contains functions to be run when document is loaded.
          * @author Brenda Uga
          */
@@ -514,18 +559,12 @@
                     Controller.loadBeers()
                 } else if (filter === 'specials'){
                     if (activeUser == null) {
-                        openModal(true);
+                        openLoginModal(true);
                     } else {
                         Controller.loadSpecials();
                     }
-                }
-
-                else if (filter === 'foods') {
+                } else if (filter === 'foods') {
                     Controller.loadFoods()
-                }
-
-                else if (filter ==='specials') {
-                    Controller.loadSpecials()
                 }
             });
 

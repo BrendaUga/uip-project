@@ -30,35 +30,6 @@ Index file that contains the client's view.
         </div>
     </div>
 
-    <div id="loginModal" class="modal">
-        <div class="modal_content">
-            <div class="modal_header">
-                <span class="closeBtn">&times;</span>
-            </div>
-            <div class="modal_body">
-                <h1 id="modalHeaderH1">Log in for VIP access</h1>
-                <form name="loginForm" method="post">
-                    <div id="form_elements" style="width: 100%">
-                        <div id="userPassWrapper">
-                            <div class="login_text">Username</div>
-                            <input id="usernameField" type=text list=users name="userId" >
-                            <datalist id=users>
-                                <option> Charlie (VIP Client)
-                                <option> Bob (VIP Client)
-                                <option> Alice (Manager)
-                            </datalist>
-                            <div class="login_text">Password</div>
-                            <input id="passwordField" type="Password" name="pwd"></td>
-                        </div>
-                        <div id="sendLogInBtnWrapper">
-                            <input id="sendLogInBtn" type="button" onclick="return validateUser(this.form)" value="Log In">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div class="sidebar-container">
         <div class="sidebar_top">
             <div class="login_wrapper">
@@ -88,6 +59,36 @@ Index file that contains the client's view.
         <div class="bounce1"></div>
         <div class="bounce2"></div>
         <div class="bounce3"></div>
+    </div>
+
+    <!-- @author Guillermo Martinez -->
+    <div id="loginModal" class="modal">
+        <div class="modal_content">
+            <div class="modal_header">
+                <span class="closeBtn">&times;</span>
+            </div>
+            <div class="modal_body">
+                <h1 id="modalHeaderH1" class="tr" key="loginWelcome"></h1>
+                <form name="loginForm" method="post">
+                    <div id="form_elements" style="width: 100%">
+                        <div id="userPassWrapper">
+                            <div class="login_text tr" key="username"></div>
+                            <input id="usernameField" type=text list=users name="userId" >
+                            <datalist id=users>
+                                <option> Charlie (VIP Client)
+                                <option> Bob (VIP Client)
+                                <option> Alice (Manager)
+                            </datalist>
+                            <div class="login_text tr" key="password">Password</div>
+                            <input id="passwordField" type="Password" name="pwd"></td>
+                        </div>
+                        <div id="sendLogInBtnWrapper">
+                            <input id="sendLogInBtn" type="button" onclick="return validateUser(this.form)" value="Log In">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div class="modal-overlay closed"></div>
