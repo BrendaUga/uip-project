@@ -7,6 +7,7 @@ All code is sufficiently commented and the contributors' names are shown on part
 
 ## Features
 Required parts:
+* drag and drop in client menu
 * undo-redo in manager view sidebar
 * responsiveness for laptop and iPhone 7 sizes
 * supports 4 languages - English, Swedish, Catalan and Estonian
@@ -15,13 +16,14 @@ Required parts:
 Features and flows:
 * customer can be a regular client or a VIP client (needs to log in as VIP)
 * customer can order drinks and foods
+    * customer can drag items to the order sidebar
     * order is checked against quantities in stock
     * customer can pay by card (using external payment terminal) or credit (if VIP client)
     * ordering decreases amounts in database
 * manager can keep an eye on the situation in the pub
     * manager needs to log in to see their view
     * manager sees outstanding orders and can mark them as done
-    * manager can undo a done order when something goes wrong
+    * manager can undo and redo a done order when something goes wrong
     * manager can see quantities of items in stock
     * manager can restock items that are out of stock (it adds +5)
 
