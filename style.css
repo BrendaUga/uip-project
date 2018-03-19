@@ -245,25 +245,25 @@ body {
            LOGIN MODAL
 \**************************/
 
-.modal {
-    display: none;
+.loginModal {
+    /*display: block;
     position: fixed;
     z-index: 1;
     left: 0;
-    top: 0;
+    top: 0;*/
     height: 100%;
     width: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.6);
+    /*background-color: rgba(0,0,0,0.6);*/
 
 }
 
 .modal_content {
-    background-color: #efefef;
-    margin: 12% auto;
-    padding: 21px;
-    width: 36%;
-    box-shadow: 0 6px 9px 0 rgba(0,0,0,0.21), 0 6px 21px 0 rgba(0,0,0,0.18);
+    /*background-color: #efefef;*/
+    /*margin: 12% auto;*/
+    /*padding: 21px;*/
+    width: 100%;
+    /*box-shadow: 0 6px 9px 0 rgba(0,0,0,0.21), 0 6px 21px 0 rgba(0,0,0,0.18);*/
     animation-name: openModal;
     animation-duration: 1s;
 }
@@ -326,11 +326,12 @@ body {
 }
 
 #sendLogInBtn {
-    width: 24%;
+    width: 27%;
     font-size: 18px;
     margin: 12px 0px 12px 0px;
     border-radius: 6px;
-    background-color: rgba(3, 43, 71, 0.45);
+    color: #efefef;
+    background-color: rgba(6, 82, 135, 0.45);
     padding: 9px 0px 9px 0px;
 }
 

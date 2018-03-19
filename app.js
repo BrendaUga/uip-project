@@ -1,4 +1,9 @@
 (function(window) {
+    /**
+     * String containing the username of the current user
+     * @author Guillermo Martinez
+     */
+    var activeUser = null;
 
     var View = {
         /**
@@ -122,28 +127,28 @@
          */
         loginModalTemplate: function () {
             return '' +
-                '    <div id="loginModal" class="modal">' +
+                '    <div id="loginModal" class="loginModal">' +
                 '       <div class="modal_content">' +
-                '            <div class="modal_header">' +
+                /*'            <div class="modal_header">' +
                 '                <span class="closeBtn">&times;</span>' +
-                '            </div>' +
+                '            </div>' +*/
                 '            <div class="modal_body">' +
                 '                <h1 id="modalHeaderH1" key="loginWelcome">' + View.translate("loginWelcome") + '</h1>' +
-                '                <form name="loginForm" method="post">' +
+                '                <form name="loginForm" method="post" id="loginForm">' +
                 '                   <div id="form_elements" style="width: 100%">' +
                 '                        <div id="userPassWrapper">' +
-                '                           <div class="login_text">Username</div>' +
+                '                           <div class="login_text" key="username">' + View.translate("username") + '</div>' +
                 '                           <input id="usernameField" type=text list=users name="userId" >' +
                 '                           <datalist id=users>' +
                 '                               <option> Charlie (VIP Client)' +
                 '                               <option> Bob (VIP Client)' +
                 '                               <option> Alice (Manager)' +
                 '                           </datalist>' +
-                '                           <div class="login_text">Password</div>' +
+                '                           <div class="login_text" key="password">' + View.translate("password") + '</div>' +
                 '                           <input id="passwordField" type="Password" name="pwd"></td>' +
                 '                        </div>' +
                 '                        <div id="sendLogInBtnWrapper">' +
-                '                            <input id="sendLogInBtn" type="button" onclick="return validateUser(this.form)" value="Log In">' +
+                '                            <input id="sendLogInBtn" type="button" value="Log In">' +
                 '                        </div>' +
                 '                    </div>' +
                 '                </form>' +
@@ -458,6 +463,26 @@
         },
 
         /**
+         * Listener for the login button
+         * @author Guillermo Martinez
+         */
+        loginButtonListener: function(callback) {
+            $('#login_button').on('click', function () {
+                callback();
+            });
+        },
+
+        /**
+         * Send the login information collected by the form
+         * @author Guillermo Martinez
+         */
+        sendLogin: function(callback) {
+            $('#sendLogInBtn').on('click', function () {
+                callback();
+            });
+        },
+
+        /**
          * Disables undo button in manager view.
          * @author Brenda Uga
          */
@@ -520,7 +545,7 @@
          * Boolean representing whether the modal for the login is openned from the specials tab or the login button
          * @author Guillermo Martinez
          */
-        modalFromSpecials: false,
+        modalFromSpecials: true,
 
         /**
          * Contains functions to be run when document is loaded.
@@ -559,7 +584,27 @@
                     Controller.loadBeers()
                 } else if (filter === 'specials'){
                     if (activeUser == null) {
-                        openLoginModal(true);
+                        Controller.modalFromSpecials = true;
+                        View.renderModal('login');
+                        /**
+                         * Handles click on login button from the login modal
+                         * @author Guillermo Martinez
+                         */
+                        View.sendLogin(function() {
+                            /* Find a way to access the form from here*/
+                            var username = $('#usernameField').val();
+                            var pass = $('#passwordField').val();
+                            if (Model.checkLogin(username, pass)) {
+                                $('#loggedUsername').text(username + ',');
+                                activeUser = username;
+                                $('#login_button').val("Log out");
+                                $('.modal-container').addClass('closed');
+                                $('.modal-overlay').addClass('closed');
+                                if (Controller.modalFromSpecials) {
+                                    window.app.Controller.loadSpecials();
+                                }
+                            }
+                        });
                     } else {
                         Controller.loadSpecials();
                     }
@@ -567,6 +612,52 @@
                     Controller.loadFoods()
                 }
             });
+
+            /**
+             * Handles click on login button. Logs out if there is already a logged in user
+             * @author Guillermo Martinez
+             */
+            View.loginButtonListener(function() {
+                if (activeUser == null) {
+                    /*View.showLoginModal(function() {
+                        modalFromSpecials = false;
+                    });*/
+                    Controller.modalFromSpecials = false;
+                    View.renderModal('login');
+                } else {
+                    activeUser = null;
+                    $('#loggedUsername').text("");
+                    $('#usernameField').val("");
+                    $('#login_button').val("Log in");
+                    window.app.Controller.loadBeers();
+                    $('.nav-tab').removeClass('active');
+                    $('.nav-tab[data-filter="beers"]').addClass('active');
+                }
+
+                /**
+                 * Handles click on login button from the login modal
+                 * @author Guillermo Martinez
+                 */
+                View.sendLogin(function() {
+                    /* Find a way to access the form from here*/
+                    var username = $('#usernameField').val();
+                    var pass = $('#passwordField').val();
+                    if (Model.checkLogin(username, pass)) {
+                        $('#loggedUsername').text(username + ',');
+                        activeUser = username;
+                        $('#login_button').val("Log out");
+                        $('.modal-container').addClass('closed');
+                        $('.modal-overlay').addClass('closed');
+                        if (Controller.modalFromSpecials) {
+                            window.app.Controller.loadSpecials();
+                        }
+                    } else {
+                        alert("Bad Username or Password");
+                    }
+                });
+            });
+
+
 
             /**
              * Registers listener in View, handles payment option button clicks.
@@ -846,6 +937,22 @@
          */
         fetchAllBeverages: function () {
             return window.app.dbLoader.allBeverages();
+        },
+
+        /**
+         * Check Login
+         * @author Guillermo Martinez
+         */
+        checkLogin: function (user, pass) {
+            if (user === "Charlie (VIP Client)" && pass === "123") {
+                return true;
+            } else if (user === "Alice (Manager)" && pass === "123") {
+                return true;
+            } else if (user === "Bob (VIP Client)" && pass === "123") {
+                return true;
+            } else {
+                return false;
+            }
         }
 
     };
