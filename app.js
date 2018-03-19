@@ -105,7 +105,7 @@
         notEnoughStockModalTemplate: function () {
             return '' +
                 '        <div class="modal-header-container">' +
-                '            <img src="done.svg"/>' +
+                '            <img src="cancel-button.svg"/>' +
                 '        </div>' +
                 '        <div class="modal-body-container">' +
                 '            <h1 class="tr" key="notEnoughStock">' + View.translate("notEnoughStock") + '</h1>' +
@@ -298,6 +298,19 @@
                 menuItems.on('dragend', function (e) {
                     $(View.orderItemsContainer).removeClass('over');
                 });
+
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    menuItems.on('click', function (e) {
+                        console.log($(e.target));
+                        if (!$(e.target).parent().hasClass('out-of-stock')) {
+                            var source = e.target;
+                            var targetName = $(source).find('.menu-item__name').html();
+                            var targetPrice = $(source).find('.menu-item__price').html().split('.')[0];
+
+                            View.addNewOrderItem(targetName, targetPrice);
+                        }
+                    });
+                }
             }
         },
 
@@ -458,7 +471,7 @@
                     callback(filter);
                 });
             } else if (eventType === 'paymentOptionClicked') {
-                $('.sidebar-button').on('click', function (e) {
+                $('.sidebar-button:not(.manager_button)').on('click', function (e) {
                     var paymentOption = e.target.dataset.option;
 
                     var orders = document.querySelectorAll('.order-item__name');
@@ -599,17 +612,8 @@
             } else if (window.location.href.indexOf('manager.html') !== -1) {
                 View.onManagerViewLoaded();
                 Controller.isManager = true;
-                var currentOrders = [
-                    [
-                        { 'name': 'Nils Oscar', 'quantity': 1 },
-                        { 'name': 'Brunello di Montalcino', 'quantity': 2 }
-                    ]
-                ];
-                currentOrders.push(JSON.parse(window.localStorage.getItem('order')));
 
-                Controller.state.currentOrders = currentOrders;
-                Controller.state.history.push(currentOrders);
-                View.renderCurrentOrders(currentOrders);
+                View.renderCurrentOrders(Controller.calculateCurrentOrders());
             }
 
             /**
@@ -793,7 +797,6 @@
                 View.renderCurrentOrders(newState);
                 View.enableRedoButton();
                 if (!Controller.canUndo()) {
-
                     View.disableUndoButton();
                 }
             });
@@ -815,6 +818,9 @@
                 if (!Controller.canRedo()) {
                     View.disableRedoButton();
                 }
+                if (Controller.canUndo()) {
+                    View.enableUndoButton();
+                }
             });
 
             /**
@@ -825,6 +831,7 @@
             View.registerEventHandler('restock', function (activeTab) {
                 Model.restock();
                 Controller['load' + activeTab]();
+                View.renderCurrentOrders(Controller.calculateCurrentOrders());
             });
 
         },
@@ -851,6 +858,28 @@
                 return false;
             }
 
+        },
+
+        /**
+         * Gets last order from localStorage and combines with a previous existing order.
+         * Sets the current orders object to history.
+         * @author Brenda Uga
+         */
+        calculateCurrentOrders: function() {
+            var currentOrders = [
+                [
+                    { 'name': 'Nils Oscar', 'quantity': 1 },
+                    { 'name': 'Brunello di Montalcino', 'quantity': 2 }
+                ]
+            ];
+            if (window.localStorage.getItem('order') !== null) {
+                currentOrders.push(JSON.parse(window.localStorage.getItem('order')));
+            }
+
+            Controller.state.currentOrders = currentOrders;
+            Controller.state.history.push(currentOrders);
+            console.log(currentOrders);
+            return currentOrders;
         },
 
         /**
@@ -884,6 +913,7 @@
          * @returns {boolean} Whether undo can be done
          */
         canUndo: function() {
+            console.log("can undo with position", Controller.state.position);
             return Controller.state.position > 0;
         },
 
