@@ -101,6 +101,9 @@ body {
 
 .user-info-container div {
     display: inline-block;
+}
+
+.user-info-container div:not(:first-of-type) {
     margin-left: 5%;
 }
 
@@ -546,6 +549,10 @@ body {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+
+.errorMessage {
+    color: rgb(240, 52, 21);
 }
 
 /**************************\

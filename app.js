@@ -168,6 +168,7 @@
                 '        </div>' +
                 '        <div class="modal-body-container">' +
                 '            <h1 class="tr" key="login">' + View.translate("login") + '</h1>' +
+                '            <p class="errorMessage"></p>' +
                 '            <form id="login-form" class="tr login-form" onsubmit="return window.app.Controller.validateLogin(event, ' + callback + ')" method="post">' +
                 '               <label for="username" class="login-label"><span class="tr" key="username">' + View.translate("username") + '</span>' +
                 '                   <select id="username" form="login-form">' +
@@ -182,7 +183,6 @@
                 '            </form>' +
                 '        </div>' +
                 '        <div class="modal-footer-container">' +
-                '            <button type="button" class="button__link close-modal-button tr" key="cancel">' + View.translate("cancel") + '</button>' +
                 '        </div>';
         },
 
@@ -210,9 +210,9 @@
          * Fetches and renders menu layout for given foods.
          * @param foods, list of foods
          */
-        renderFoodMenu: function (foods) {
+        renderFoodMenu: function (foods, isManager) {
             $('#menu').html(View.menuItemFoodTemplate(foods));
-            View.registerMenuItemListeners();
+            View.registerMenuItemListeners(isManager);
         },
 
         /**
@@ -237,6 +237,7 @@
                 $(modalContainer).html(View.notEnoughCreditModalTemplate());
             } else if (modalType === 'login') {
                 $(modalContainer).html(View.loginModalTemplate(callback));
+                // On manager view we don't want the client to be able to just close the login modal without logging in
                 $('.manager-modal .close-modal-button').on('click', function () {
                    window.location.href = '/index.html';
                 });
@@ -278,6 +279,7 @@
 
         /**
          * Registers menu item listeners. Registers 'dragstart' and 'dragend' listeners currently.
+         * It registers click listener on menu items on mobile, because drag and drop events don't work like that on mobile
          * @author Brenda Uga
          */
         registerMenuItemListeners: function(isManager) {
@@ -301,7 +303,6 @@
 
                 if (window.matchMedia('(max-width: 768px)').matches) {
                     menuItems.on('click', function (e) {
-                        console.log($(e.target));
                         if (!$(e.target).parent().hasClass('out-of-stock')) {
                             var source = e.target;
                             var targetName = $(source).find('.menu-item__name').html();
@@ -317,7 +318,7 @@
         /**
          * Contains functions to be run when document is loaded.
          * Registers drag events (dragover, dragenter and drop) on orderItemsContainer.
-         * Registers language selection click listener.
+         * Registers language selection click listener and opens beers tab by default.
          * @author Brenda Uga
          */
         onLoaded: function() {
@@ -503,7 +504,10 @@
             } else if (eventType === 'restock') {
                 $('.restock-button').on('click', function () {
                     View.renderModal('restockConfirmed');
-                    var activeTab = $('.nav-tab.active').html();
+                    var activeTab = $('.nav-tab.active').data('filter');
+                    var firstLetter = activeTab.substring(0, 1).toUpperCase();
+                    var tail = activeTab.substring(1);
+                    activeTab = firstLetter + tail;
                     callback(activeTab);
                 });
             }
@@ -566,6 +570,22 @@
          */
         closeLoginButton: function () {
             $('.login-modal-trigger').addClass('closed');
+        },
+
+        /**
+         * Displays error message when login info is wrong.
+         * @author Brenda Uga
+         */
+        displayError: function() {
+            $('.errorMessage').html(View.translate('wrongLogin'));
+        },
+
+        /**
+         * Clears error messages from login modal.
+         * @author Brenda Uga
+         */
+        clearErrors: function () {
+            $('.errorMessage').html('');
         }
 
     };
@@ -638,7 +658,8 @@
                 }
 
                 else if (filter ==='specials') {
-                    if (Controller.currentUser === 'vip') {
+                    // If logged in then render specials, otherwise prompt to log in
+                    if (Controller.currentUser === 'vip' || Controller.currentUser === 'manager') {
                         Controller.loadSpecials();
                     } else {
                         View.renderModal('login', function () {
@@ -701,6 +722,7 @@
                     }, 5000);
                 } else if (option === 'credit') {
                     Controller.currentOrderSum = orderSum;
+                    // User must be logged in to be able to use credit payment
                     if (Controller.currentUser === null) {
                         View.renderModal('login', function () {
                             // check if order total is less then available credit
@@ -730,7 +752,7 @@
                 // Save to localStorage
                 window.localStorage.setItem('order', JSON.stringify(storedOrder));
 
-                // Decrease amounts in stock for items that are only drinks
+                // Decrease amounts in stock for items that are only drinks (foods don't have quantity in db)
                 var orderWithoutFoods = storedOrder.filter(function (orderItem) {
                     var foodRegex = /Nachos|Hamburger|Wings|Fries|Mozzarella/;
                     return !foodRegex.test(orderItem.name);
@@ -825,7 +847,7 @@
 
             /**
              * Registers listener in View, handles 'Restock' button click in manager view.
-             * Sets the quantity of items to max in database.
+             * Sets the quantity of items to have +5 in database.
              * @author Brenda Uga
              */
             View.registerEventHandler('restock', function (activeTab) {
@@ -836,8 +858,15 @@
 
         },
 
+        /**
+         * Validates log in.
+         * @param e Event, to prevent submission to server side
+         * @param callback A callback to be executed after login is successful
+         * @returns {boolean} False when login is not successful
+         */
         validateLogin: function (e, callback) {
             e.preventDefault();
+            View.clearErrors();
 
             var username = $('#username').val();
             var password = $('input[type="password"]').val();
@@ -855,7 +884,9 @@
                 View.renderUserInfo(managerUser.name, '');
                 if (callback) callback('manager');
             } else {
+                View.displayError();
                 return false;
+
             }
 
         },
@@ -878,7 +909,6 @@
 
             Controller.state.currentOrders = currentOrders;
             Controller.state.history.push(currentOrders);
-            console.log(currentOrders);
             return currentOrders;
         },
 
@@ -913,7 +943,6 @@
          * @returns {boolean} Whether undo can be done
          */
         canUndo: function() {
-            console.log("can undo with position", Controller.state.position);
             return Controller.state.position > 0;
         },
 
@@ -931,7 +960,7 @@
          */
         loadFoods: function () {
             var food = Model.fetchFoods();
-            View.renderFoodMenu(food)
+            View.renderFoodMenu(food, Controller.isManager);
         },
 
         /**
