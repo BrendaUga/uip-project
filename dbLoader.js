@@ -1,4 +1,24 @@
 (function(window) {
+
+    /**
+     * Holds a VIP user with their credit.
+     * @author Brenda Uga
+     * @type {{name: string, credit: number}}
+     */
+    var vipUser = {
+        name: 'Charlie',
+        credit: 500.0
+    };
+
+    /**
+     * Holds a manager user with their name.
+     * @author Brenda Uga
+     * @type {{name: string}}
+     */
+    var managerUser = {
+        name: 'Peter'
+    };
+
     /**
      *  Retrieves all beverages that are "Whisky" from the database.
      *  Returns:
@@ -199,6 +219,30 @@
         return collector;
     }
 
+    /**
+     * Returns the correct user object with a name and amount of credit.
+     * @author Brenda Uga
+     * @returns {{name: string, credit: number}}
+     */
+    function getUser(type) {
+        if (type === 'vip') {
+            return vipUser;
+        } else {
+            return managerUser;
+        }
+    }
+
+    /**
+     * Decreases the amount of credit in vipUser object by amount in parameter.
+     * @author Brenda Uga
+     * @param amount amount to subtract from credit
+     * @returns {{name: string, credit: number}} The updated vipUser object
+     */
+    function decreaseCredit(amount) {
+        vipUser.credit -= amount;
+        return vipUser;
+    }
+
     //@author Brenda Uga
     window.app = window.app || {};
     window.app.dbLoader = {
@@ -209,7 +253,9 @@
         allSpecialBeverages: allSpecialBeverages,
         allBeverages: allBeverages,
         restock: restock,
-        decreaseAmounts: decreaseAmounts
+        decreaseAmounts: decreaseAmounts,
+        getUser: getUser,
+        decreaseCredit: decreaseCredit
     };
 
 })(window);

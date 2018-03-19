@@ -99,6 +99,11 @@ body {
            SIDEBAR
 \**************************/
 
+.user-info-container div {
+    display: inline-block;
+    margin-left: 5%;
+}
+
 .sidebar-container {
     flex: 1;
     height: 100%;
@@ -129,6 +134,7 @@ body {
     padding: 3%;
     font-size: 1.2em;
     text-decoration: none;
+    border-radius: 5px;
 }
 
 .order-items-container {
@@ -288,7 +294,7 @@ body {
 }
 
 .closed {
-    display: none;
+    display: none !important;
 }
 
 .modal-header-container img {
@@ -321,6 +327,10 @@ body {
     width: 100%;
     z-index: 1;
     background-color: rgba(0,0,0,0.5);
+}
+
+.modal-overlay.manager-overlay {
+    background-color: rgba(0, 0, 0, 0.95);
 }
 
 /**************************\
@@ -395,6 +405,10 @@ body {
     margin: 1% 0 0 0;
 }
 
+.out-of-stock {
+    user-select: none;
+}
+
 .out-of-stock .menu-item__name {
     text-decoration: line-through;
 }
@@ -465,6 +479,74 @@ body {
           transform: scale(1.0);
     }
 }
+
+/**************************\
+      LOGIN MODAL
+\**************************/
+
+.login-form {
+    min-width: 280px;
+}
+
+.login-label {
+    display: block;
+    padding: 4%;
+    text-align: left;
+    margin-bottom: 5%;
+}
+
+.login-label span, .login-label input {
+    display: block;
+}
+
+.login-label select, .login-label input {
+    width: 100%;
+    margin-top: 2%;
+    font-size: 1.0em;
+}
+
+.login-label input {
+    outline: none;
+    border: none;
+    padding: 4px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-button {
+    display: inline-block;
+    width: 35%;
+    background-color: var(--sidebar-button-bg-color);
+    color: var(--sidebar-text-color);
+    border: 0;
+    margin: 3%;
+    padding: 3%;
+    font-size: 1.2em;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.login-modal-trigger {
+    display: inline-block;
+    width: 35%;
+    background-color: var(--sidebar-button-bg-color);
+    color: var(--sidebar-text-color);
+    border: 0;
+    margin: 0%;
+    padding: 1%;
+    font-size: 1.2em;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
 /**************************\
       RESPONSIVENESS
 \**************************/

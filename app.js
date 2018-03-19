@@ -116,6 +116,24 @@
         },
 
         /**
+         * Creates the HTML for the not enough credit modal.
+         * @author Brenda Uga
+         * @returns {string} HTML of modal with type 'notEnoughCredit', to be appended to DOM
+         */
+        notEnoughCreditModalTemplate: function () {
+            return '' +
+                '        <div class="modal-header-container">' +
+                '            <img src="cancel-button.svg"/>' +
+                '        </div>' +
+                '        <div class="modal-body-container">' +
+                '            <h1 class="tr" key="notEnoughCredit">' + View.translate("notEnoughCredit") + '</h1>' +
+                '        </div>' +
+                '        <div class="modal-footer-container">' +
+                '            <button type="button" class="button__link close-modal-link tr" key="backToMenu">' + View.translate("backToMenu") + '</button>' +
+                '        </div>';
+        },
+
+        /**
          * Creates the HTML for current orders.
          * @author Brenda Uga
          * @param currentOrders List of current orders, where each item is a list of order items in that order.
@@ -137,6 +155,35 @@
                 htmlString += '</div>';
             }
             return htmlString;
+        },
+
+        /**
+         * Creates the HTML string for the login modal.
+         * @author Brenda Uga
+         * @returns {string} Login modal HTML
+         */
+        loginModalTemplate: function (callback) {
+            return '' +
+                '        <div class="modal-header-container">' +
+                '        </div>' +
+                '        <div class="modal-body-container">' +
+                '            <h1 class="tr" key="login">' + View.translate("login") + '</h1>' +
+                '            <form id="login-form" class="tr login-form" onsubmit="return window.app.Controller.validateLogin(event, ' + callback + ')" method="post">' +
+                '               <label for="username" class="login-label"><span class="tr" key="username">' + View.translate("username") + '</span>' +
+                '                   <select id="username" form="login-form">' +
+                '                       <option value="vip">VIP client Charlie</option>' +
+                '                       <option value="manager">Manager Peter</option>' +
+                '                   </select>' +
+                '               </label>' +
+                '               <label for="password" class="login-label"><span class="tr" key="password">' + View.translate("password") + '</span>' +
+                '                   <input id="password" type="password" required/>' +
+                '               </label>' +
+                '            <button type="submit" class="button login-button tr" key="login">' + View.translate("login") + '</button>' +
+                '            </form>' +
+                '        </div>' +
+                '        <div class="modal-footer-container">' +
+                '            <button type="button" class="button__link close-modal-button tr" key="cancel">' + View.translate("cancel") + '</button>' +
+                '        </div>';
         },
 
         /**
@@ -174,27 +221,41 @@
          * @author Brenda Uga
          * @param modalType String representing type of modal wanted
          */
-        renderModal: function (modalType) {
+        renderModal: function (modalType, callback) {
             var modalContainer = $('.modal-container');
             var modalOverlay = $('.modal-overlay');
 
             if (modalType === 'orderConfirm') {
                 $(modalContainer).html(View.orderConfirmModalTemplate());
             } else if (modalType === 'creditPayment') {
-                //TODO: implement creditPayment template and render here
-                console.log("Credit payment modal needed here now");
+                $(modalContainer).html(View.orderConfirmModalTemplate());
             } else if (modalType === 'restockConfirmed') {
                 $(modalContainer).html(View.restockConfirmedModalTemplate());
             } else if (modalType === 'notEnoughStock') {
                 $(modalContainer).html(View.notEnoughStockModalTemplate());
+            } else if (modalType === 'notEnoughCredit') {
+                $(modalContainer).html(View.notEnoughCreditModalTemplate());
+            } else if (modalType === 'login') {
+                $(modalContainer).html(View.loginModalTemplate(callback));
+                $('.manager-modal .close-modal-button').on('click', function () {
+                   window.location.href = '/index.html';
+                });
             }
 
             $(modalContainer).removeClass('closed');
             $(modalOverlay).removeClass('closed');
-            $('.close-modal-link, .modal-overlay').on('click', function() {
-                $(modalContainer).addClass('closed');
-                $(modalOverlay).addClass('closed');
+            $('.close-modal-link, .modal-overlay:not(.manager-overlay)').on('click', function() {
+                View.closeModal();
             });
+        },
+
+        /**
+         * Closes modal and overlay.
+         * @author Brenda Uga
+         */
+        closeModal: function () {
+            $('.modal-container').addClass('closed');
+            $('.modal-overlay').addClass('closed');
         },
 
         /**
@@ -285,6 +346,10 @@
                 $('#beerbutton').trigger('click');
             });
 
+            $('.login-modal-trigger').on('click', function () {
+               View.renderModal('login');
+            });
+
         },
 
         /**
@@ -301,11 +366,19 @@
          * @author Brenda Uga
          */
         onManagerViewLoaded: function() {
+            View.selectedLanguage = 'en';
             $(function() {
                 $('#en').trigger('click');
             });
+
             $(function() {
-                $('#beerbutton').trigger('click');
+                $('.nav-tab[data-filter="beers"]').trigger('click');
+            });
+
+            View.renderModal('login', function (user) {
+                if (user !== 'manager') {
+                    window.location.href = '/';
+                }
             });
 
             $('.lang').on('click', function() {
@@ -389,8 +462,13 @@
                     var paymentOption = e.target.dataset.option;
 
                     var orders = document.querySelectorAll('.order-item__name');
-                    var activeTab = $('.nav-tab.active').html();
-                    callback(paymentOption, orders, activeTab);
+                    var activeTab = $('.nav-tab.active').data('filter');
+                    var firstLetter = activeTab.substring(0, 1).toUpperCase();
+                    var tail = activeTab.substring(1);
+                    activeTab = firstLetter + tail;
+
+                    var orderSum = $('.order-total__price').html().split('.')[0];
+                    callback(paymentOption, orders, activeTab, orderSum);
                 });
             } else if (eventType === 'markedAsDone') {
                 $('.manager_button[data-option="done"]').on('click', function () {
@@ -452,14 +530,41 @@
 
         /**
          * Empties the order sidebar after order is placed
+         * @author Brenda Uga
          */
         emptySidebar: function () {
             $('.order-items-container').html('');
+        },
+
+        /**
+         * Renders logged in user's name and credit.
+         * @author Brenda Uga
+         */
+        renderUserInfo: function (name, credit) {
+            $('.name').html(name);
+            $('.creditAmount').html(credit);
+            $('.user-info-container div').removeClass('closed');
+            View.closeLoginButton();
+        },
+
+        /**
+         * Hides login button, when logged in.
+         * @author Brenda Uga
+         */
+        closeLoginButton: function () {
+            $('.login-modal-trigger').addClass('closed');
         }
 
     };
 
     var Controller = {
+
+        /**
+         * Currently logged in user.
+         * Null if not logged in.
+         * @author Brenda Uga
+         */
+        currentUser: null,
 
         /**
          * Boolean representing whether we are currently in manager view or not.
@@ -476,6 +581,12 @@
             history: [],
             position: 0
         },
+
+        /**
+         * Holds current order total sum.
+         * @author Brenda Uga
+         */
+        currentOrderSum: 0,
 
         /**
          * Contains functions to be run when document is loaded.
@@ -507,23 +618,30 @@
              */
             View.registerEventHandler('menuFilterClicked', function (filter) {
                 if (filter === 'whiskeys') {
-                    Controller.loadWhiskeys()
+                    Controller.loadWhiskeys();
                 }
 
                 else if(filter === 'wines') {
-                    Controller.loadWines()
+                    Controller.loadWines();
                 }
 
                 else if (filter === 'beers') {
-                    Controller.loadBeers()
+                    Controller.loadBeers();
                 }
 
                 else if (filter === 'foods') {
-                    Controller.loadFoods()
+                    Controller.loadFoods();
                 }
 
                 else if (filter ==='specials') {
-                    Controller.loadSpecials()
+                    if (Controller.currentUser === 'vip') {
+                        Controller.loadSpecials();
+                    } else {
+                        View.renderModal('login', function () {
+                            window.app.Controller.loadSpecials();
+                        });
+                    }
+
                 }
             });
 
@@ -532,7 +650,11 @@
              * Saves order to localStorage, so we can access it in manager view.
              * @author Brenda Uga
              */
-            View.registerEventHandler('paymentOptionClicked', function (option, order, activeTab) {
+            View.registerEventHandler('paymentOptionClicked', function (option, order, activeTab, orderSum) {
+                // If nothing is in order tab, do nothing
+                if (orderSum === '') {
+                    return;
+                }
                 var beverages = window.app.Model.fetchAllBeverages();
 
                 // Create suitable data structure for manager view to parse orders from.
@@ -553,6 +675,8 @@
                 });
 
                 var orderCorrect = storedOrder.every(function (orderItem) {
+                    var foodRegex = /Nachos|Hamburger|Wings|Fries|Mozzarella/;
+                    if (foodRegex.test(orderItem.name)) { return true; }
                     var beverage = beverages.find(function (beverage) {
                         return beverage.name === orderItem.name && beverage.quantity >= orderItem.quantity;
                     });
@@ -572,18 +696,45 @@
                         View.renderModal('orderConfirm');
                     }, 5000);
                 } else if (option === 'credit') {
-                    View.renderModal('creditPayment');
-                    // TODO: check if credit is enough, if yes then decrease credit, otherwise show message that not enough funds
+                    Controller.currentOrderSum = orderSum;
+                    if (Controller.currentUser === null) {
+                        View.renderModal('login', function () {
+                            // check if order total is less then available credit
+                            var availableCredit = window.app.Model.getVIPUser().credit;
+                            if (parseFloat(window.app.Controller.currentOrderSum) <= availableCredit) {
+                                var vipUser = window.app.Model.decreaseVIPCredit(window.app.Controller.currentOrderSum);
+                                window.app.View.renderUserInfo(vipUser.name, vipUser.credit);
+                                window.app.View.renderModal('creditPayment');
+                            } else {
+                                window.app.View.renderModal('notEnoughCredit');
+                            }
+                        });
+                    } else {
+                        // check if order total is less then available credit
+                        var availableCredit = Model.getVIPUser().credit;
+                        if (parseFloat(orderSum) <= availableCredit) {
+                            var vipUser = Model.decreaseVIPCredit(orderSum);
+                            View.renderUserInfo(vipUser.name, vipUser.credit);
+                            View.renderModal('creditPayment');
+                        } else {
+                            View.renderModal('notEnoughCredit');
+                        }
+                    }
+
                 }
 
                 // Save to localStorage
                 window.localStorage.setItem('order', JSON.stringify(storedOrder));
 
-                // Decrease amounts in stock
-                window.app.Model.decreaseAmounts(storedOrder);
+                // Decrease amounts in stock for items that are only drinks
+                var orderWithoutFoods = storedOrder.filter(function (orderItem) {
+                    var foodRegex = /Nachos|Hamburger|Wings|Fries|Mozzarella/;
+                    return !foodRegex.test(orderItem.name);
+                });
+                window.app.Model.decreaseAmounts(orderWithoutFoods);
 
                 // Render active tab again to show updated quantities
-                Controller['load' + activeTab + 's']();
+                window.app.Controller['load' + activeTab]();
 
                 // Empty the orders sidebar
                 View.emptySidebar();
@@ -673,8 +824,32 @@
              */
             View.registerEventHandler('restock', function (activeTab) {
                 Model.restock();
-                Controller['load' + activeTab + 's']();
+                Controller['load' + activeTab]();
             });
+
+        },
+
+        validateLogin: function (e, callback) {
+            e.preventDefault();
+
+            var username = $('#username').val();
+            var password = $('input[type="password"]').val();
+
+            if (username === 'vip' && password === '123') {
+                Controller.currentUser = 'vip';
+                View.closeModal();
+                var vipUser = Model.getVIPUser();
+                View.renderUserInfo(vipUser.name, vipUser.credit);
+                if (callback) callback('vip');
+            } else if (username === 'manager' && password === '123') {
+                Controller.currentUser = 'manager';
+                View.closeModal();
+                var managerUser = Model.getManagerUser();
+                View.renderUserInfo(managerUser.name, '');
+                if (callback) callback('manager');
+            } else {
+                return false;
+            }
 
         },
 
@@ -805,6 +980,34 @@
          */
         fetchAllBeverages: function () {
             return window.app.dbLoader.allBeverages();
+        },
+
+        /**
+         * Gets the VIP user object from the database.
+         * @author Brenda Uga
+         * @returns {{name: string, credit: number}} VIP user object
+         */
+        getVIPUser: function () {
+            return window.app.dbLoader.getUser('vip');
+        },
+
+        /**
+         * Gets the manager user object from the database.
+         * @author Brenda Uga
+         * @returns {{name: string, credit: number}} VIP user object
+         */
+        getManagerUser: function () {
+            return window.app.dbLoader.getUser('manager');
+        },
+
+        /**
+         * Decreases VIP credit amount in database.
+         * @author Brenda Uga
+         * @param amount to decrease credit by
+         * @returns {{name: string, credit: number}} updated VIP user object
+         */
+        decreaseVIPCredit: function (amount) {
+           return window.app.dbLoader.decreaseCredit(amount);
         }
 
     };
