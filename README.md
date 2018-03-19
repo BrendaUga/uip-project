@@ -4,10 +4,14 @@ UI programming I project by group The Seasick Captain. This project implements a
 
 All code is sufficiently commented and the contributors' names are shown on parts they wrote.
 
+## HTML files
+* client view is located in `index.html`
+* manager view is located in `manager.html`
+
 
 ## Features
 Required parts:
-* drag and drop in client menu
+* drag and drop from client menu to order sidebar
 * undo-redo in manager view sidebar
 * responsiveness for laptop and iPhone 7 sizes
 * supports 4 languages - English, Swedish, Catalan and Estonian
@@ -19,13 +23,13 @@ Features and flows:
     * customer can drag items to the order sidebar
     * order is checked against quantities in stock
     * customer can pay by card (using external payment terminal) or credit (if VIP client)
-    * ordering decreases amounts in database
+    * ordering decreases amounts (both quantity and credit) in database
 * manager can keep an eye on the situation in the pub
     * manager needs to log in to see their view
     * manager sees outstanding orders and can mark them as done
     * manager can undo and redo a done order when something goes wrong
     * manager can see quantities of items in stock
-    * manager can restock items that are out of stock (it adds +5)
+    * manager can restock items that are out of stock (it adds +5 to each item currently out of stock)
 
 ## Login credentials
 All preset usernames are listed in the dropdown in login view. All users have the same password, which is '123'.
