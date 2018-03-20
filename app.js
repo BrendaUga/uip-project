@@ -870,7 +870,7 @@
             View.registerEventHandler('restock', function (activeTab) {
                 Model.restock();
                 Controller['load' + activeTab + 's']();
-                View.renderCurrentOrders(Controller.calculateCurrentOrders());
+                //View.renderCurrentOrders(Controller.calculateCurrentOrders());
             });
 
         },
