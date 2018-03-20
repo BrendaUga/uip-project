@@ -148,7 +148,7 @@
                 '                           <input id="passwordField" type="Password" name="pwd"></td>' +
                 '                        </div>' +
                 '                        <div id="sendLogInBtnWrapper">' +
-                '                            <input id="sendLogInBtn" type="button" value="Log In">' +
+                '                            <button id="sendLogInBtn" type="button" class="tr" key="login">' + View.translate("login") + '</button>' +
                 '                        </div>' +
                 '                    </div>' +
                 '                </form>' +
@@ -284,7 +284,6 @@
 
                 if (window.matchMedia('(max-width: 768px)').matches) {
                     menuItems.on('click', function (e) {
-                        console.log($(e.target));
                         if (!$(e.target).parent().hasClass('out-of-stock')) {
                             var source = e.target;
                             var targetName = $(source).find('.menu-item__name').html();
@@ -606,7 +605,7 @@
                                 } else {
                                     $('#loggedUsername').text(username + ',');
                                     activeUser = username;
-                                    $('#login_button').val("Log out");
+                                    $('#login_button').html(View.translate("logout"));
                                     $('.modal-container').addClass('closed');
                                     $('.modal-overlay').addClass('closed');
                                     if (Controller.modalFromSpecials) {
@@ -633,7 +632,7 @@
                     activeUser = null;
                     $('#loggedUsername').text("");
                     $('#usernameField').val("");
-                    $('#login_button').val("Log in");
+                    $('#login_button').html(View.translate("login"));
                     window.app.Controller.loadBeers();
                     $('.nav-tab').removeClass('active');
                     $('.nav-tab[data-filter="beers"]').addClass('active');
@@ -647,7 +646,7 @@
                     activeUser = null;
                     $('#loggedUsername').text("");
                     $('#usernameField').val("");
-                    $('#login_button').val("Log in");
+                    $('#login_button').html(View.translate("login"));
                     window.app.Controller.loadBeers();
                     $('.nav-tab').removeClass('active');
                     $('.nav-tab[data-filter="beers"]').addClass('active');
@@ -668,7 +667,7 @@
                         } else {
                             $('#loggedUsername').text(username + ',');
                             activeUser = username;
-                            $('#login_button').val("Log out");
+                            $('#login_button').html(View.translate("logout"));
                             $('.modal-container').addClass('closed');
                             $('.modal-overlay').addClass('closed');
                             if (Controller.modalFromSpecials) {
@@ -894,7 +893,6 @@
 
             Controller.state.currentOrders = currentOrders;
             Controller.state.history.push(currentOrders);
-            console.log(currentOrders);
             return currentOrders;
         },
 
@@ -929,7 +927,6 @@
          * @returns {boolean} Whether undo can be done
          */
         canUndo: function() {
-            console.log("can undo with position", Controller.state.position);
             return Controller.state.position > 0;
         },
 

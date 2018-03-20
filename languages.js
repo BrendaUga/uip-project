@@ -34,6 +34,8 @@ LangTrans['en']['notEnoughStock']='The items in your order <br>do not have enoug
 LangTrans['en']['loginWelcome']='Log in for VIP access';
 LangTrans['en']['username']='Username';
 LangTrans['en']['password']='Password';
+LangTrans['en']['login']='Log in';
+LangTrans['en']['logout']='Log out';
 
 LangTrans['sv']['beer']='Öl';
 LangTrans['sv']['wine']='Vin';
@@ -57,6 +59,8 @@ LangTrans['sv']['notEnoughStock']='De varor i din beställning <br>har inte till
 LangTrans['sv']['loginWelcome']='Logga in för VIP-åtkomst';
 LangTrans['sv']['username']='Användarnamn';
 LangTrans['sv']['password']='Lösenord';
+LangTrans['sv']['login']='Logga in';
+LangTrans['sv']['logout']='Logga ut';
 
 LangTrans['ca']['beer']='Cervesa';
 LangTrans['ca']['wine']='Vi';
@@ -80,6 +84,8 @@ LangTrans['ca']['notEnoughStock']='No tenim suficients existències <br>dels art
 LangTrans['ca']['loginWelcome']='Iniciar sessió per accés VIP';
 LangTrans['ca']['username']='Nom d\'usuari';
 LangTrans['ca']['password']='Contrasenya';
+LangTrans['ca']['login']='Iniciar Sessió';
+LangTrans['ca']['logout']='Tancar sessió';
 
 LangTrans['es']['beer']='Õlu';
 LangTrans['es']['wine']='Vein';
@@ -103,3 +109,5 @@ LangTrans['es']['notEnoughStock']='Tellitud tooteid ei ole piisavalt varus!';
 LangTrans['es']['loginWelcome']='VIP-sisselogimine';
 LangTrans['es']['username']='Kasutajanimi';
 LangTrans['es']['password']='Parool';
+LangTrans['es']['login']='Logi sisse';
+LangTrans['es']['logout']='Logi välja';
