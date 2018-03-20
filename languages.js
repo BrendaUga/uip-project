@@ -27,8 +27,8 @@ LangTrans['en']['markAsDone']='MARK AS DONE';
 LangTrans['en']['undo']='Undo';
 LangTrans['en']['redo']='Redo';
 LangTrans['en']['order']='Order';
-LangTrans['en']['orderConfirmed']='YOUR ORDER IS ON <br>IT\'S WAY</h1>';
-LangTrans['en']['restockConfirmed']='RESTOCK CONFIRMED<br>Your items are on it\'s way!';
+LangTrans['en']['orderConfirmed']='YOUR ORDER IS ON <br>ITS WAY</h1>';
+LangTrans['en']['restockConfirmed']='RESTOCK CONFIRMED<br>Your items are on its way!';
 LangTrans['en']['backToMenu']='Back to menu';
 LangTrans['en']['notEnoughStock']='The items in your order <br>do not have enough of them <br>in stock!';
 
