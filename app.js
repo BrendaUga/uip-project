@@ -588,7 +588,7 @@
                 } else if (filter === 'beers') {
                     Controller.loadBeers()
                 } else if (filter === 'specials') {
-                    if (activeUser == null) {
+                    if (activeUser == null && !Controller.isManager) {
                         Controller.modalFromSpecials = true;
                         View.renderModal('login');
                         /**
@@ -600,13 +600,18 @@
                             var username = $('#usernameField').val();
                             var pass = $('#passwordField').val();
                             if (Model.checkLogin(username, pass)) {
-                                $('#loggedUsername').text(username + ',');
-                                activeUser = username;
-                                $('#login_button').val("Log out");
-                                $('.modal-container').addClass('closed');
-                                $('.modal-overlay').addClass('closed');
-                                if (Controller.modalFromSpecials) {
-                                    window.app.Controller.loadSpecials();
+                                if (username === "Alice (Manager)" && pass === "123") {
+                                    activeUser = username;
+                                    window.location.href = "manager.html";
+                                } else {
+                                    $('#loggedUsername').text(username + ',');
+                                    activeUser = username;
+                                    $('#login_button').val("Log out");
+                                    $('.modal-container').addClass('closed');
+                                    $('.modal-overlay').addClass('closed');
+                                    if (Controller.modalFromSpecials) {
+                                        window.app.Controller.loadSpecials();
+                                    }
                                 }
                             }
                         });
@@ -623,7 +628,16 @@
              * @author Guillermo Martinez
              */
             View.loginButtonListener(function() {
-                if (activeUser == null) {
+                if (Controller.isManager) {
+                    window.location.href = "index.html";
+                    activeUser = null;
+                    $('#loggedUsername').text("");
+                    $('#usernameField').val("");
+                    $('#login_button').val("Log in");
+                    window.app.Controller.loadBeers();
+                    $('.nav-tab').removeClass('active');
+                    $('.nav-tab[data-filter="beers"]').addClass('active');
+                } else if (activeUser == null) {
                     /*View.showLoginModal(function() {
                         modalFromSpecials = false;
                     });*/
@@ -648,13 +662,18 @@
                     var username = $('#usernameField').val();
                     var pass = $('#passwordField').val();
                     if (Model.checkLogin(username, pass)) {
-                        $('#loggedUsername').text(username + ',');
-                        activeUser = username;
-                        $('#login_button').val("Log out");
-                        $('.modal-container').addClass('closed');
-                        $('.modal-overlay').addClass('closed');
-                        if (Controller.modalFromSpecials) {
-                            window.app.Controller.loadSpecials();
+                        if (username === "Alice (Manager)" && pass === "123") {
+                            activeUser = username;
+                            window.location.href = "manager.html";
+                        } else {
+                            $('#loggedUsername').text(username + ',');
+                            activeUser = username;
+                            $('#login_button').val("Log out");
+                            $('.modal-container').addClass('closed');
+                            $('.modal-overlay').addClass('closed');
+                            if (Controller.modalFromSpecials) {
+                                window.app.Controller.loadSpecials();
+                            }
                         }
                     } else {
                         alert("Bad Username or Password");
