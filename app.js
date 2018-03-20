@@ -582,7 +582,7 @@
                     Controller.loadWines()
                 } else if (filter === 'beers') {
                     Controller.loadBeers()
-                } else if (filter === 'specials'){
+                } else if (filter === 'specials') {
                     if (activeUser == null) {
                         Controller.modalFromSpecials = true;
                         View.renderModal('login');
@@ -590,7 +590,7 @@
                          * Handles click on login button from the login modal
                          * @author Guillermo Martinez
                          */
-                        View.sendLogin(function() {
+                        View.sendLogin(function () {
                             /* Find a way to access the form from here*/
                             var username = $('#usernameField').val();
                             var pass = $('#passwordField').val();
@@ -609,7 +609,7 @@
                         Controller.loadSpecials();
                     }
                 } else if (filter === 'foods') {
-                    Controller.loadFoods()
+                        Controller.loadFoods();
                 }
             });
 
@@ -799,6 +799,45 @@
             });
 
             /**
+             * Registers listener in View, handles 'Undo' button click in manager view.
+             * Manages state history and current state to enable undo functionality.
+             * @author Brenda Uga
+             */
+            View.registerEventHandler('undo', function() {
+                if (!Controller.canUndo()) {
+                    return;
+                }
+                var newState = Controller.state.history[--Controller.state.position];
+                Controller.state.currentOrders = newState;
+
+                View.renderCurrentOrders(newState);
+                View.enableRedoButton();
+                if (!Controller.canUndo()) {
+
+                    View.disableUndoButton();
+                }
+            });
+
+            /**
+             * Registers listener in View, handles 'Redo' button click in manager view.
+             * Manages state history and current state to enable redo functionality.
+             * @author Brenda Uga
+             */
+            View.registerEventHandler('redo', function() {
+                if (!Controller.canRedo()) {
+                    return;
+                }
+
+                var newState = Controller.state.history[++Controller.state.position];
+                Controller.state.currentOrders = newState;
+                View.renderCurrentOrders(newState);
+
+                if (!Controller.canRedo()) {
+                    View.disableRedoButton();
+                }
+            });
+
+            /**
              * Registers listener in View, handles 'Restock' button click in manager view.
              * Sets the quantity of items to max in database.
              * @author Brenda Uga
@@ -912,6 +951,14 @@
          */
         fetchSpecials: function(){
             return window.app.dbLoader.allSpecialBeverages();
+        },
+
+        /**
+         * Restocks quantities in database.
+         * @author Brenda Uga
+         */
+        restock: function() {
+            window.app.dbLoader.restock();
         },
 
         /**
