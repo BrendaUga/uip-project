@@ -23,7 +23,6 @@ Index file that contains the client's view.
                 <li class="nav-tab tr" data-filter="foods" key="food" id="foodbutton"></li>
                 <li class="nav-tab tr" data-filter="specials" key="special" id="specialbutton"></li>
             </ul>
-
         </nav>
 
         <div class="menu-content">
@@ -32,15 +31,19 @@ Index file that contains the client's view.
     </div>
 
     <div class="sidebar-container">
-        <div class="sidebar-container__padding">
-            <button id="es" class="lang"><img src="flag_es.png"></button>
-            <button id="ca" class="lang"><img src="flag_cat.png"></button>
-            <button id="sv" class="lang"><img src="flag_sw.png"></button>
-            <button id="en" class="lang"><img src="flag_en.png"></button>
-            <h1 class="tr" key="your-order"></h1>
-            <div class="order-items-container">
-
+        <div class="sidebar_top">
+            <div class="login_wrapper">
+                <div id="loggedUsername"></div>
+                <button id="login_button" class="tr" key="login" type="button" style="padding:0px; border:0px; background:transparent;"></button>
             </div>
+            <button id="en" class="lang"><img src="flag_en.png"></button>
+            <button id="sv" class="lang"><img src="flag_sw.png"></button>
+            <button id="ca" class="lang"><img src="flag_cat.png"></button>
+            <button id="es" class="lang"><img src="flag_es.png"></button>
+        </div>
+        <div class="sidebar-container__padding">
+            <h1 class="tr" key="your-order"></h1>
+            <div class="order-items-container"></div>
         </div>
         <div class="sidebar-footer">
             <div class="order-total-container">
@@ -66,6 +69,7 @@ Index file that contains the client's view.
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous">
 </script>
+
 <script src="app.js"></script>
 <script src ="languages.js"></script>
 </body>

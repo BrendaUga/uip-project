@@ -33,11 +33,17 @@ Manager view HTML file.
     </div>
 
     <div class="sidebar-container">
-        <div class="sidebar-container__padding">
-            <button id="es" class="lang"><img src="flag_es.png"></button>
-            <button id="ca" class="lang"><img src="flag_cat.png"></button>
-            <button id="sv" class="lang"><img src="flag_sw.png"></button>
+        <div class="sidebar_top">
+            <div class="login_wrapper">
+                <div id="loggedManager" style="margin-right: 12px">Alice (Manager),</div>
+                <button id="login_button" class="tr"  key="logout" type="button" value="Log out" style="padding:0px; border:0px; background:transparent;">
+            </div>
             <button id="en" class="lang"><img src="flag_en.png"></button>
+            <button id="sv" class="lang"><img src="flag_sw.png"></button>
+            <button id="ca" class="lang"><img src="flag_cat.png"></button>
+            <button id="es" class="lang"><img src="flag_es.png"></button>
+        </div>
+        <div class="sidebar-container__padding">
             <h1 class="tr" key="currentOrders"></h1>
             <div class="order-items-container">
 

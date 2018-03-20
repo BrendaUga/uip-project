@@ -108,6 +108,59 @@ body {
     flex-direction: column;
 }
 
+.sidebar_top {
+    height: var(--navbar-height);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 9px;
+}
+
+.login_wrapper {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#loggedUsername {
+    padding-right: 9px;
+}
+
+#login_button {
+    padding:0px;
+    border:0px;
+    background:transparent;
+    color: var(--sidebar-text-color);
+    overflow:visible;
+    font-size: 18px;
+}
+
+#login_button:hover, #login_button:focus {
+    text-decoration: none;
+    cursor: pointer;
+    outline: 0;
+}
+
+.lang {
+    padding:0px;
+    border:0px;
+    background:transparent;
+    white-space:nowrap;
+    width:30px;
+    height:20px;
+    overflow:visible;
+    float: right;
+    margin: 7px;
+}
+
+.lang img {
+    width:30px;
+    height:20px;
+}
+
 .sidebar-container__padding {
     max-height: 75%;
     flex: 1;
@@ -187,6 +240,103 @@ body {
     font-weight: bold;
 }
 
+
+/**************************\
+           LOGIN MODAL
+\**************************/
+
+.loginModal {
+    /*display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;*/
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    /*background-color: rgba(0,0,0,0.6);*/
+
+}
+
+.modal_content {
+    /*background-color: #efefef;*/
+    /*margin: 12% auto;*/
+    /*padding: 21px;*/
+    width: 100%;
+    /*box-shadow: 0 6px 9px 0 rgba(0,0,0,0.21), 0 6px 21px 0 rgba(0,0,0,0.18);*/
+    animation-name: openModal;
+    animation-duration: 1s;
+}
+
+.closeBtn {
+    color: #666666;
+    float: right;
+    font-size: 27px;
+}
+
+.closeBtn:hover, .closeBtn:focus {
+    color: #121212;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@keyframes openModal {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+#modalHeaderH1 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px 0px 24px 0px;
+}
+
+#userPassWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login_text {
+    width: 75%;
+    font-size: 21px;
+    padding-bottom: 6px;
+}
+
+#usernameField {
+    width: 75%;
+    font-size: 15px;
+    margin-bottom: 24px;
+    padding: 6px 0px 6px 0px;
+}
+
+#passwordField {
+    width: 75%;
+    font-size: 15px;
+    margin-bottom: 24px;
+    padding: 6px 0px 6px 0px;
+}
+
+#sendLogInBtnWrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#sendLogInBtn {
+    width: 27%;
+    font-size: 18px;
+    margin: 12px 0px 12px 0px;
+    border-radius: 6px;
+    color: #efefef;
+    background-color: rgba(6, 82, 135, 0.45);
+    padding: 9px 0px 9px 0px;
+}
+
+
+
 /**************************\
            MENU
 \**************************/
@@ -265,6 +415,17 @@ body {
     color: var(--menu-item-info-color);
     margin: 1% 0 0 0;
     pointer-events: none;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 }
 
 /**************************\
@@ -396,6 +557,10 @@ body {
     margin: 1% 0 0 0;
 }
 
+.out-of-stock {
+    user-select: none;
+}
+
 .out-of-stock .menu-item__name {
     text-decoration: line-through;
 }
@@ -466,6 +631,7 @@ body {
           transform: scale(1.0);
     }
 }
+
 /**************************\
       RESPONSIVENESS
 \**************************/
@@ -533,7 +699,6 @@ body {
     .modal-overlay {
         background-color: rgba(0, 0, 0, 0.75);
     }
-
     .restock-button {
         top: 54%;
         left: 50%;

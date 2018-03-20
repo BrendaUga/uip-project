@@ -1,4 +1,9 @@
 (function(window) {
+    /**
+     * String containing the username of the current user
+     * @author Guillermo Martinez
+     */
+    var activeUser = null;
 
     var View = {
         /**
@@ -116,6 +121,43 @@
         },
 
         /**
+         * Creates the HTML for the login modal.
+         * @author Guillermo Martinez
+         * @returns {string} HTML of modal with type 'login',
+         */
+        loginModalTemplate: function () {
+            return '' +
+                '    <div id="loginModal" class="loginModal">' +
+                '       <div class="modal_content">' +
+                /*'            <div class="modal_header">' +
+                '                <span class="closeBtn">&times;</span>' +
+                '            </div>' +*/
+                '            <div class="modal_body">' +
+                '                <h1 id="modalHeaderH1" key="loginWelcome">' + View.translate("loginWelcome") + '</h1>' +
+                '                <form name="loginForm" method="post" id="loginForm">' +
+                '                   <div id="form_elements" style="width: 100%">' +
+                '                        <div id="userPassWrapper">' +
+                '                           <div class="login_text" key="username">' + View.translate("username") + '</div>' +
+                '                           <input id="usernameField" type=text list=users name="userId" >' +
+                '                           <datalist id=users>' +
+                '                               <option> Charlie (VIP Client)' +
+                '                               <option> Bob (VIP Client)' +
+                '                               <option> Alice (Manager)' +
+                '                           </datalist>' +
+                '                           <div class="login_text" key="password">' + View.translate("password") + '</div>' +
+                '                           <input id="passwordField" type="Password" name="pwd"></td>' +
+                '                        </div>' +
+                '                        <div id="sendLogInBtnWrapper">' +
+                '                            <button id="sendLogInBtn" type="button" class="tr" key="login">' + View.translate("login") + '</button>' +
+                '                        </div>' +
+                '                    </div>' +
+                '                </form>' +
+                '            </div>' +
+                '       </div>' +
+                '   </div>';
+        },
+
+        /**
          * Creates the HTML for current orders.
          * @author Brenda Uga
          * @param currentOrders List of current orders, where each item is a list of order items in that order.
@@ -187,6 +229,8 @@
                 $(modalContainer).html(View.restockConfirmedModalTemplate());
             } else if (modalType === 'notEnoughStock') {
                 $(modalContainer).html(View.notEnoughStockModalTemplate());
+            } else if (modalType === 'login') {
+                $(modalContainer).html(View.loginModalTemplate());
             }
 
             $(modalContainer).removeClass('closed');
@@ -240,7 +284,6 @@
 
                 if (window.matchMedia('(max-width: 768px)').matches) {
                     menuItems.on('click', function (e) {
-                        console.log($(e.target));
                         if (!$(e.target).parent().hasClass('out-of-stock')) {
                             var source = e.target;
                             var targetName = $(source).find('.menu-item__name').html();
@@ -432,6 +475,26 @@
         },
 
         /**
+         * Listener for the login button
+         * @author Guillermo Martinez
+         */
+        loginButtonListener: function(callback) {
+            $('#login_button').on('click', function () {
+                callback();
+            });
+        },
+
+        /**
+         * Send the login information collected by the form
+         * @author Guillermo Martinez
+         */
+        sendLogin: function(callback) {
+            $('#sendLogInBtn').on('click', function () {
+                callback();
+            });
+        },
+
+        /**
          * Disables undo button in manager view.
          * @author Brenda Uga
          */
@@ -492,6 +555,12 @@
         },
 
         /**
+         * Boolean representing whether the modal for the login is openned from the specials tab or the login button
+         * @author Guillermo Martinez
+         */
+        modalFromSpecials: true,
+
+        /**
          * Contains functions to be run when document is loaded.
          * @author Brenda Uga
          */
@@ -513,24 +582,105 @@
             View.registerEventHandler('menuFilterClicked', function (filter) {
                 if (filter === 'whiskeys') {
                     Controller.loadWhiskeys()
-                }
-
-                else if(filter === 'wines') {
+                } else if(filter === 'wines') {
                     Controller.loadWines()
-                }
-
-                else if (filter === 'beers') {
+                } else if (filter === 'beers') {
                     Controller.loadBeers()
-                }
-
-                else if (filter === 'foods') {
-                    Controller.loadFoods()
-                }
-
-                else if (filter ==='specials') {
-                    Controller.loadSpecials()
+                } else if (filter === 'specials') {
+                    if (activeUser == null && !Controller.isManager) {
+                        Controller.modalFromSpecials = true;
+                        View.renderModal('login');
+                        /**
+                         * Handles click on login button from the login modal
+                         * @author Guillermo Martinez
+                         */
+                        View.sendLogin(function () {
+                            /* Find a way to access the form from here*/
+                            var username = $('#usernameField').val();
+                            var pass = $('#passwordField').val();
+                            if (Model.checkLogin(username, pass)) {
+                                if (username === "Alice (Manager)" && pass === "123") {
+                                    activeUser = username;
+                                    window.location.href = "manager.html";
+                                } else {
+                                    $('#loggedUsername').text(username + ',');
+                                    activeUser = username;
+                                    $('#login_button').html(View.translate("logout"));
+                                    $('.modal-container').addClass('closed');
+                                    $('.modal-overlay').addClass('closed');
+                                    if (Controller.modalFromSpecials) {
+                                        window.app.Controller.loadSpecials();
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        Controller.loadSpecials();
+                    }
+                } else if (filter === 'foods') {
+                        Controller.loadFoods();
                 }
             });
+
+            /**
+             * Handles click on login button. Logs out if there is already a logged in user
+             * @author Guillermo Martinez
+             */
+            View.loginButtonListener(function() {
+                if (Controller.isManager) {
+                    window.location.href = "index.html";
+                    activeUser = null;
+                    $('#loggedUsername').text("");
+                    $('#usernameField').val("");
+                    $('#login_button').html(View.translate("login"));
+                    window.app.Controller.loadBeers();
+                    $('.nav-tab').removeClass('active');
+                    $('.nav-tab[data-filter="beers"]').addClass('active');
+                } else if (activeUser == null) {
+                    /*View.showLoginModal(function() {
+                        modalFromSpecials = false;
+                    });*/
+                    Controller.modalFromSpecials = false;
+                    View.renderModal('login');
+                } else {
+                    activeUser = null;
+                    $('#loggedUsername').text("");
+                    $('#usernameField').val("");
+                    $('#login_button').html(View.translate("login"));
+                    window.app.Controller.loadBeers();
+                    $('.nav-tab').removeClass('active');
+                    $('.nav-tab[data-filter="beers"]').addClass('active');
+                }
+
+                /**
+                 * Handles click on login button from the login modal
+                 * @author Guillermo Martinez
+                 */
+                View.sendLogin(function() {
+                    /* Find a way to access the form from here*/
+                    var username = $('#usernameField').val();
+                    var pass = $('#passwordField').val();
+                    if (Model.checkLogin(username, pass)) {
+                        if (username === "Alice (Manager)" && pass === "123") {
+                            activeUser = username;
+                            window.location.href = "manager.html";
+                        } else {
+                            $('#loggedUsername').text(username + ',');
+                            activeUser = username;
+                            $('#login_button').html(View.translate("logout"));
+                            $('.modal-container').addClass('closed');
+                            $('.modal-overlay').addClass('closed');
+                            if (Controller.modalFromSpecials) {
+                                window.app.Controller.loadSpecials();
+                            }
+                        }
+                    } else {
+                        alert("Bad Username or Password");
+                    }
+                });
+            });
+
+
 
             /**
              * Registers listener in View, handles payment option button clicks.
@@ -674,6 +824,45 @@
             });
 
             /**
+             * Registers listener in View, handles 'Undo' button click in manager view.
+             * Manages state history and current state to enable undo functionality.
+             * @author Brenda Uga
+             */
+            View.registerEventHandler('undo', function() {
+                if (!Controller.canUndo()) {
+                    return;
+                }
+                var newState = Controller.state.history[--Controller.state.position];
+                Controller.state.currentOrders = newState;
+
+                View.renderCurrentOrders(newState);
+                View.enableRedoButton();
+                if (!Controller.canUndo()) {
+
+                    View.disableUndoButton();
+                }
+            });
+
+            /**
+             * Registers listener in View, handles 'Redo' button click in manager view.
+             * Manages state history and current state to enable redo functionality.
+             * @author Brenda Uga
+             */
+            View.registerEventHandler('redo', function() {
+                if (!Controller.canRedo()) {
+                    return;
+                }
+
+                var newState = Controller.state.history[++Controller.state.position];
+                Controller.state.currentOrders = newState;
+                View.renderCurrentOrders(newState);
+
+                if (!Controller.canRedo()) {
+                    View.disableRedoButton();
+                }
+            });
+
+            /**
              * Registers listener in View, handles 'Restock' button click in manager view.
              * Sets the quantity of items to max in database.
              * @author Brenda Uga
@@ -704,7 +893,6 @@
 
             Controller.state.currentOrders = currentOrders;
             Controller.state.history.push(currentOrders);
-            console.log(currentOrders);
             return currentOrders;
         },
 
@@ -739,7 +927,6 @@
          * @returns {boolean} Whether undo can be done
          */
         canUndo: function() {
-            console.log("can undo with position", Controller.state.position);
             return Controller.state.position > 0;
         },
 
@@ -822,6 +1009,14 @@
         },
 
         /**
+         * Restocks quantities in database.
+         * @author Brenda Uga
+         */
+        restock: function() {
+            window.app.dbLoader.restock();
+        },
+
+        /**
          * Decreases amounts in DB on items in orderedItems, by the quantity specified in orderedItems.
          * @author Brenda Uga
          * @param orderedItems object of names and quantities
@@ -836,6 +1031,22 @@
          */
         fetchAllBeverages: function () {
             return window.app.dbLoader.allBeverages();
+        },
+
+        /**
+         * Check Login
+         * @author Guillermo Martinez
+         */
+        checkLogin: function (user, pass) {
+            if (user === "Charlie (VIP Client)" && pass === "123") {
+                return true;
+            } else if (user === "Alice (Manager)" && pass === "123") {
+                return true;
+            } else if (user === "Bob (VIP Client)" && pass === "123") {
+                return true;
+            } else {
+                return false;
+            }
         }
 
     };

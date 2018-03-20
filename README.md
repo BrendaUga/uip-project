@@ -20,9 +20,10 @@ Features and flows:
     * order is checked against quantities in stock
     * customer can pay by card (using external payment terminal) or credit (if VIP client)
     * ordering decreases amounts in database
-* manager can keep an eye on the situation in the pub
+    * manager can keep an eye on the situation in the pub
     * manager needs to log in to see their view
     * manager sees outstanding orders and can mark them as done
+    * manager can undo a done order when something goes wrong
     * manager can undo and redo a done order when something goes wrong
     * manager can see quantities of items in stock
     * manager can restock items that are out of stock (it adds +5)
