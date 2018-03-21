@@ -39,7 +39,7 @@
      *    type,
      *    alcohol content,
      *    quantity
-     * @author Brenda Uga
+     * @author Brenda Uga, Patrik Viklander
      * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
      */
     function allWineBeverages() {
@@ -47,8 +47,8 @@
         var collector = [];
 
         for (var i = 0; i < DB5.spirits.length; i++) {
-            // Retrieves first 22 items, because that's the amount of different wines in a normal pub
-            if (DB5.spirits[i].varugrupp.includes("Vin") || DB5.spirits[i].varugrupp.includes("vin") && collector.length < 22) {
+            // Retrieves wines in the bar
+            if (DB5.spirits[i].varugrupp.includes("Vin") || DB5.spirits[i].varugrupp.includes("vin")) {
                 collector.push({
                     name: DB5.spirits[i].namn,
                     price: DB5.spirits[i].prisinklmoms,
@@ -70,7 +70,7 @@
      *    type,
      *    alcohol content,
      *    quantity
-     * @author Brenda Uga
+     * @author Brenda Uga, Patrik Viklander
      * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
      */
     function allBeerBeverages() {
@@ -78,8 +78,8 @@
         var collector = [];
 
         for (var i = 0; i < DB5.spirits.length; i++) {
-            // Retrieves first 22 items, because that's the amount of different beers in a normal pub
-            if (DB5.spirits[i].varugrupp.includes("Öl") && collector.length < 22) {
+            // Retrieves beers in the bar
+            if (DB5.spirits[i].varugrupp.includes("Öl")) {
                 collector.push({
                     name: DB5.spirits[i].namn,
                     price: DB5.spirits[i].prisinklmoms,
@@ -129,7 +129,7 @@
      *    type,
      *    alcohol content,
      *    quantity
-     * @author Brenda Uga
+     * @author Brenda Uga, Patrik Viklander
      * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
      */
     function allSpecialBeverages() {
@@ -137,7 +137,7 @@
         var collector = [];
 
         for (var i = 0; i < DB5.spirits.length; i++) {
-            // Retrieves first 22 items, because that's the amount of different beers in a normal pub
+            // Retrieves all the specials in the bar
             if (DB5.spirits[i].special.includes("special") && collector.length < 22) {
                 collector.push({
                     name: DB5.spirits[i].namn,
@@ -199,7 +199,7 @@
         return collector;
     }
 
-    //@author Brenda Uga
+    //@author Brenda Uga, Patrik Viklander
     window.app = window.app || {};
     window.app.dbLoader = {
         allWhiskeyBeverages: allWhiskeyBeverages,

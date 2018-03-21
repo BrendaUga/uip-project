@@ -1,3 +1,4 @@
+// @author Patrik Viklander
 var DB5 = {
     "spirits"   :
         [{

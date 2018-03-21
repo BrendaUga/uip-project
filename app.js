@@ -44,6 +44,7 @@
 
         /**
          * Creates the menu item template that is used to display all the different foods.
+         * @author Patrik Viklander
          * @param foods, list of foods in one tab
          * @returns {string}, HTML string to append to the DOM
          */
@@ -203,6 +204,7 @@
 
         /**
          * Fetches and renders menu layout for given foods.
+         * @author Patrik Viklander
          * @param foods, list of foods
          */
         renderFoodMenu: function (foods) {
@@ -300,7 +302,9 @@
          * Contains functions to be run when document is loaded.
          * Registers drag events (dragover, dragenter and drop) on orderItemsContainer.
          * Registers language selection click listener.
-         * @author Brenda Uga
+         * Displays the web page in english when being loaded.
+         * Displays all the beers in the pub when web page is loaded
+         * @author Brenda Uga, Patrik Viklander
          */
         onLoaded: function() {
             View.orderItemsContainer = $('.order-items-container');
@@ -907,6 +911,7 @@
 
         /**
          * Loads wine type drinks from Model and renders them in the View.
+         * @author Patrik Viklander
          */
         loadWines: function () {
             var wineDrinks = Model.fetchWines();
@@ -915,6 +920,7 @@
 
         /**
          * Loads beer type drinks from Model and renders them in the View.
+         * @author Patrik Viklander
          */
         loadBeers: function () {
             var beerDrinks = Model.fetchBeers();
@@ -941,6 +947,7 @@
 
         /**
          * Loads foods from Model and renders them in the View.
+         * @author Patrik Viklander
          */
         loadFoods: function () {
             var food = Model.fetchFoods();
@@ -949,6 +956,7 @@
 
         /**
          * Loads special type drinks from Model and renders them in the View.
+         * @author Patrik Viklander
          */
         loadSpecials: function () {
             var specialDrinks = Model.fetchSpecials();
@@ -970,6 +978,7 @@
 
         /**
          * Fetches wine type drinks from the DB.
+         * @author Patrik Viklander
          * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}, list of drink objects
          */
         fetchWines: function() {
@@ -978,6 +987,7 @@
 
         /**
          * Fetches beer type drinks from the DB.
+         * @author Patrik Viklander
          * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}, list of drink objects
          */
         fetchBeers: function(){
@@ -986,6 +996,7 @@
 
         /**
          * Fetches foods from the DB.
+         * @author Patrik Viklander
          * @returns {{name: string, price: string, category: string, description: string}[]}
          */
         fetchFoods: function(){
@@ -994,6 +1005,7 @@
 
         /**
          * Fetches special type drinks from the DB.
+         * @author Patrik Viklander
          * @returns {{name: string, price: string, category: string, alcoholContent: string, quantity: string}[]}
          */
         fetchSpecials: function(){
