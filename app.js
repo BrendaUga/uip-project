@@ -225,8 +225,7 @@
             if (modalType === 'orderConfirm') {
                 $(modalContainer).html(View.orderConfirmModalTemplate());
             } else if (modalType === 'creditPayment') {
-                //TODO: implement creditPayment template and render here
-                console.log("Credit payment modal needed here now");
+                $(modalContainer).html(View.orderConfirmModalTemplate());
             } else if (modalType === 'restockConfirmed') {
                 $(modalContainer).html(View.restockConfirmedModalTemplate());
             } else if (modalType === 'notEnoughStock') {
@@ -874,7 +873,7 @@
             View.registerEventHandler('restock', function (activeTab) {
                 Model.restock();
                 Controller['load' + activeTab + 's']();
-                View.renderCurrentOrders(Controller.calculateCurrentOrders());
+                //View.renderCurrentOrders(Controller.calculateCurrentOrders());
             });
 
         },
