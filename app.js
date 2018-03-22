@@ -727,7 +727,7 @@
                         View.renderModal('orderConfirm');
                     }, 5000);
                 } else if (option === 'credit') {
-                    View.renderModal('creditPayment');
+                    View.renderModal('orderConfirm');
                     // TODO: check if credit is enough, if yes then decrease credit, otherwise show message that not enough funds
                 }
 
